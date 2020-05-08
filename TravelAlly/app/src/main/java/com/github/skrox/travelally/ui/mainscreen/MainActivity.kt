@@ -1,4 +1,4 @@
-package com.github.SkroX.travelally.ui.mainscreen
+package com.github.skrox.travelally.ui.mainscreen
 
 import android.os.Bundle
 import android.view.Menu
@@ -13,7 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.github.SkroX.travelally.R
+import com.github.skrox.travelally.R
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.github.SkroX.travelally.ui.mainscreen.slideshow
+package com.github.skrox.travelally.ui.mainscreen.slideshow
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

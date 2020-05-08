@@ -1,4 +1,4 @@
-package com.github.SkroX.travelally.ui.mainscreen.slideshow
+package com.github.skrox.travelally.ui.mainscreen.slideshow
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.github.SkroX.travelally.R
+import com.github.skrox.travelally.R
 
 class SlideshowFragment : Fragment() {
 

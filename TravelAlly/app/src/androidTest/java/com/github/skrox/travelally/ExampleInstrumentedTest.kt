@@ -1,4 +1,4 @@
-package com.github.SkroX.travelally
+package com.github.skrox.travelally
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

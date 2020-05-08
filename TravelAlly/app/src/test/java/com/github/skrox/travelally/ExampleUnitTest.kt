@@ -1,4 +1,4 @@
-package com.github.SkroX.travelally
+package com.github.skrox.travelally
 
 import org.junit.Test
 
