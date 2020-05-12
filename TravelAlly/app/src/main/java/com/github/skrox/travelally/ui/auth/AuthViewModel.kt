@@ -54,26 +54,33 @@ class AuthViewModel(private val mGoogleSignInClient: GoogleSignInClient,
             val account =
                 completedTask.getResult(ApiException::class.java)
 //            user.postValue(account)
-            CoroutineScope(IO).launch {
-                val authResponse=userRepo.login(account?.idToken.toString())
-                Log.e("token",authResponse.token)
-                userRepo.saveuser(authResponse, account)
-            }
 
-            Log.e("logged in",account?.idToken.toString())
+                CoroutineScope(IO).launch {
+                    try {
+                        val authResponse=userRepo.login(account?.idToken.toString())
+                        Log.e("token",authResponse.token)
+                        userRepo.saveuser(authResponse, account)
+                        Log.e("logged in",account?.idToken.toString())
+                    }  catch (e: ApiException) {
+                        // The ApiException status code indicates the detailed failure reason.
+                        // Please refer to the GoogleSignInStatusCodes class reference for more information.
+
+                        authListener?.onFailure(e.message!!)
+                        e.printStackTrace()
+
+//            updateUI(null)
+                    }catch (e:NoInternetException){
+                        authListener?.onFailure(e.message!!)
+                    }catch (e:Exception){
+                        authListener?.onFailure(e.message!!)
+                    }
+
+                }
 
             // Signed in successfully, show authenticated UI.
 //            updateUI(account)
-        } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-
-            authListener?.onFailure(e.message!!)
-            e.printStackTrace()
-
-//            updateUI(null)
-        }catch (e:NoInternetException){
-            authListener?.onFailure(e.message!!)
+        }catch (e:Exception){
+            authListener?.onFailure(e.message?:e.toString())
         }
     }
 
