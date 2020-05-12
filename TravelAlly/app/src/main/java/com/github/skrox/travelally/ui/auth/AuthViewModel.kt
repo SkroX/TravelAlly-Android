@@ -1,26 +1,33 @@
 package com.github.skrox.travelally.ui.auth
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.skrox.travelally.data.repositories.UserRepository
 import com.github.skrox.travelally.util.ActivityNavigation
 import com.github.skrox.travelally.util.LiveMessageEvent
+import com.github.skrox.travelally.util.NoInternetException
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 
 const val GOOGLE_SIGN_IN=1
 const val TAG="Debug"
 class AuthViewModel(private val mGoogleSignInClient: GoogleSignInClient,
-                    private val userRepository: UserRepository): ViewModel() {
-
+                    private val userRepo: UserRepository): ViewModel() {
 
     val startActivityForResultEvent = LiveMessageEvent<ActivityNavigation>()
+
+    fun getuser(context: Context)=userRepo.getUser(context)
 
     fun googleLogin(view: View) {
         val signInIntent = mGoogleSignInClient.signInIntent
@@ -42,8 +49,14 @@ class AuthViewModel(private val mGoogleSignInClient: GoogleSignInClient,
         try {
             val account =
                 completedTask.getResult(ApiException::class.java)
+//            user.postValue(account)
+            CoroutineScope(IO).launch {
+                val authResponse=userRepo.login(account?.idToken.toString())
+                Log.e("token",authResponse.token)
+                userRepo.saveuser(authResponse, account)
+            }
 
-                     Log.e("logged in",account?.idToken.toString())
+            Log.e("logged in",account?.idToken.toString())
 
             // Signed in successfully, show authenticated UI.
 //            updateUI(account)
@@ -52,6 +65,8 @@ class AuthViewModel(private val mGoogleSignInClient: GoogleSignInClient,
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             e.printStackTrace()
 //            updateUI(null)
+        }catch (e:NoInternetException){
+
         }
     }
 
