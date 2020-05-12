@@ -16,16 +16,20 @@ import com.github.skrox.travelally.data.repositories.UserRepository
 import com.github.skrox.travelally.databinding.ActivityLoginBinding
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.util.ActivityNavigation
+import com.github.skrox.travelally.util.hide
+import com.github.skrox.travelally.util.show
+import com.github.skrox.travelally.util.snackbar
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import kotlinx.android.synthetic.main.activity_login.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
 
-class LoginActivity : AppCompatActivity(), ActivityNavigation, KodeinAware{
+class LoginActivity : AppCompatActivity(), ActivityNavigation, KodeinAware, AuthListener{
 
     override val kodein by kodein()
     private val userRepo:UserRepository by instance<UserRepository>()
@@ -49,6 +53,8 @@ class LoginActivity : AppCompatActivity(), ActivityNavigation, KodeinAware{
 
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.viewmodel = viewModel
+
+        viewModel.authListener=this
 //        viewModel.updateuser((GoogleSignIn.getLastSignedInAccount(this)));
 
         viewModel.getuser(this).observe(this, Observer { user->
@@ -74,6 +80,20 @@ class LoginActivity : AppCompatActivity(), ActivityNavigation, KodeinAware{
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         vm.onResultFromActivity(requestCode,resultCode,data)
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onStarted() {
+        progress_circular.show()
+    }
+
+    override fun onSuccess() {
+        progress_circular.hide()
+
+    }
+
+    override fun onFailure(msg: String) {
+        progress_circular.hide()
+        root_layout.snackbar(msg)
     }
 
 }

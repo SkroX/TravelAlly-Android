@@ -27,15 +27,19 @@ class AuthViewModel(private val mGoogleSignInClient: GoogleSignInClient,
 
     val startActivityForResultEvent = LiveMessageEvent<ActivityNavigation>()
 
+    var authListener:AuthListener?=null
+
     fun getuser(context: Context)=userRepo.getUser(context)
 
     fun googleLogin(view: View) {
+        authListener?.onStarted()
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResultEvent.sendEvent { startActivityForResult(signInIntent, GOOGLE_SIGN_IN) }
     }
 
     //Called from Activity receving result
     fun onResultFromActivity(requestCode: Int, resultCode: Int, data: Intent?) {
+        authListener?.onSuccess()
         when(requestCode) {
             GOOGLE_SIGN_IN -> {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -63,10 +67,13 @@ class AuthViewModel(private val mGoogleSignInClient: GoogleSignInClient,
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
+
+            authListener?.onFailure(e.message!!)
             e.printStackTrace()
+
 //            updateUI(null)
         }catch (e:NoInternetException){
-
+            authListener?.onFailure(e.message!!)
         }
     }
 
