@@ -6,6 +6,7 @@ import com.github.skrox.travelally.data.db.AppDatabase
 import com.github.skrox.travelally.data.network.MyApi
 import com.github.skrox.travelally.data.network.NetworkConnectionInterceptor
 import com.github.skrox.travelally.data.preferences.PreferenceProvider
+import com.github.skrox.travelally.data.repositories.TripsRepository
 import com.github.skrox.travelally.data.repositories.UserRepository
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -24,6 +25,7 @@ class TravelAllyApplication : Application(), KodeinAware {
         bind() from singleton { MyApi(instance()) }
         bind() from singleton { AppDatabase(instance()) }
         bind() from singleton { UserRepository(instance(),instance(),instance()) }
+        bind() from singleton { TripsRepository(instance(),instance(), instance()) }
 //        bind() from singleton { QuotesRepository(instance(), instance(), instance()) }
 //        bind() from provider { AuthViewModelFactory(instance(), instance()) }
 //        bind() from provider { ProfileViewModelFactory(instance()) }

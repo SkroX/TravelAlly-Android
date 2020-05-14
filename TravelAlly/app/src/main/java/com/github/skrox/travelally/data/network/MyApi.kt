@@ -1,7 +1,10 @@
 package com.github.skrox.travelally.data.network
 
+import com.github.skrox.travelally.R
 import com.github.skrox.travelally.data.network.responses.AuthResponse
 import com.github.skrox.travelally.data.network.postobjects.SendToken
+import com.github.skrox.travelally.data.network.responses.TripsResponse
+import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -15,6 +18,10 @@ interface MyApi {
         @Body id_token: SendToken?
     ) : Response<AuthResponse>
 
+
+//    @Headers("Authorization: Token ${}")
+    @GET("trips/popular/")
+    suspend fun getPopularTrips(@HeaderMap headers:Map<String,String?>) : Response<TripsResponse>
 
     companion object{
         operator fun invoke(

@@ -87,4 +87,6 @@ dependencies {
     //for google login
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha02'
+
 }
