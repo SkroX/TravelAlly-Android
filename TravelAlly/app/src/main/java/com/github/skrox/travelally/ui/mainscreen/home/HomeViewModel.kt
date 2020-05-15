@@ -48,6 +48,9 @@ class HomeViewModel( private val userRepository: UserRepository,
     private val tripsNearMe = MutableLiveData<List<Trip>>()
     val _tripsNearMe : LiveData<List<Trip>> = tripsNearMe
 
+    private val allTrips = MutableLiveData<List<Trip>>()
+    val _allTrips : LiveData<List<Trip>> = allTrips
+
     fun loadPopularTrips()=viewModelScope.launch(Dispatchers.IO){
         try {
             val trips=tripsRepository.getPopularTrips()
@@ -64,6 +67,16 @@ class HomeViewModel( private val userRepository: UserRepository,
             val trips = tripsRepository.getTripsNearMe()
             tripsNearMe.postValue(trips)
         }catch (e:Exception){
+            homeListener?.onFailure(e.message ?: "Unknown cause")
+            e.printStackTrace()
+        }
+    }
+
+    fun loadAllTrips()=viewModelScope.launch(Dispatchers.IO) {
+        try {
+            val trips = tripsRepository.getAllTrips()
+            allTrips.postValue(trips)
+        }catch (e: Exception){
             homeListener?.onFailure(e.message ?: "Unknown cause")
             e.printStackTrace()
         }

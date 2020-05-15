@@ -1,6 +1,7 @@
 package com.github.skrox.travelally.data.network
 
 import com.github.skrox.travelally.R
+import com.github.skrox.travelally.data.db.entities.Trip
 import com.github.skrox.travelally.data.network.responses.AuthResponse
 import com.github.skrox.travelally.data.network.postobjects.SendToken
 import com.github.skrox.travelally.data.network.responses.TripsResponse
@@ -25,6 +26,9 @@ interface MyApi {
 
     @GET("trips/nearme/")
     suspend fun getTripsNearMe(@HeaderMap headers:Map<String,String?>, @QueryMap query: Map<String,Double>) : Response<TripsResponse>
+
+    @GET("trips/trips")
+    suspend fun getAllTrips(@HeaderMap headers: Map<String, String?>): Response<List<Trip>>
 
     companion object{
         operator fun invoke(

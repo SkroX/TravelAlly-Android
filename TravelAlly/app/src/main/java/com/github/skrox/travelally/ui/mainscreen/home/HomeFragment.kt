@@ -92,6 +92,7 @@ class HomeFragment() : Fragment(), KodeinAware, HomeListener{
 
         homeVM.loadPopularTrips()
         homeVM.loadTripsNearMe()
+        homeVM.loadAllTrips()
 
         context?.let {
             homeVM.getuser(it).observe(viewLifecycleOwner, Observer {
@@ -109,6 +110,10 @@ class HomeFragment() : Fragment(), KodeinAware, HomeListener{
 
                 Log.e("nearmetrip", it.size.toString())
 
+        })
+
+        homeVM._allTrips.observe(viewLifecycleOwner, Observer {
+            Log.e("all trips", it.size.toString())
         })
     }
 

@@ -30,4 +30,10 @@ class TripsRepository (private val api: MyApi, private val db: AppDatabase,
         val response=apiRequest { api.getTripsNearMe(authMap, queryMap) }
         return response.trips
     }
+
+    suspend fun getAllTrips(): List<Trip>{
+        //TODO:check if fetch needed by db
+
+        return apiRequest { api.getAllTrips(authMap) }
+    }
 }
