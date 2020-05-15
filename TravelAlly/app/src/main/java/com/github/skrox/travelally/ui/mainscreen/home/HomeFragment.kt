@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -51,7 +52,7 @@ class HomeFragment() : Fragment(), KodeinAware, HomeListener{
 
     private val tripsRepository:TripsRepository by instance<TripsRepository>()
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var homeVM:HomeViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -74,19 +75,11 @@ class HomeFragment() : Fragment(), KodeinAware, HomeListener{
         binding.viewmodel = homeViewModel
         binding.lifecycleOwner = this
 
+        homeVM=homeViewModel
+
         homeViewModel.homeListener=this
 
-        context?.let {
-            homeViewModel.getuser(it).observe(viewLifecycleOwner, Observer {
-                text_home.text=it?.idToken
-            })
-        }
-
-        homeViewModel.popularTrips.observe(viewLifecycleOwner, Observer {
-            if (it.isNotEmpty()){
-                Log.e("trip",it.size.toString())
-            }
-        })
+        bindUI()
 
         return binding.root
     }
@@ -95,5 +88,28 @@ class HomeFragment() : Fragment(), KodeinAware, HomeListener{
         root_layout.snackbar(message)
     }
 
+    private fun bindUI(){
+
+        homeVM.loadPopularTrips()
+        homeVM.loadTripsNearMe()
+
+        context?.let {
+            homeVM.getuser(it).observe(viewLifecycleOwner, Observer {
+                text_home.text=it?.idToken
+            })
+        }
+
+        homeVM._popularTrips.observe(viewLifecycleOwner, Observer {
+            if (it.isNotEmpty()){
+                Log.e("populartrip",it.size.toString())
+            }
+        })
+
+        homeVM._tripsNearMe.observe(viewLifecycleOwner, Observer {
+
+                Log.e("nearmetrip", it.size.toString())
+
+        })
+    }
 
 }

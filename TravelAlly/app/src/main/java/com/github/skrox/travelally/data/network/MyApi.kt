@@ -23,6 +23,9 @@ interface MyApi {
     @GET("trips/popular/")
     suspend fun getPopularTrips(@HeaderMap headers:Map<String,String?>) : Response<TripsResponse>
 
+    @GET("trips/nearme/")
+    suspend fun getTripsNearMe(@HeaderMap headers:Map<String,String?>, @QueryMap query: Map<String,Double>) : Response<TripsResponse>
+
     companion object{
         operator fun invoke(
             networkConnectionInterceptor: NetworkConnectionInterceptor

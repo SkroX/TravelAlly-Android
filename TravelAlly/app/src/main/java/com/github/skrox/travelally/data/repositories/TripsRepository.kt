@@ -14,12 +14,20 @@ import kotlinx.coroutines.withContext
 class TripsRepository (private val api: MyApi, private val db: AppDatabase,
                        private val prefs: PreferenceProvider): SafeApiRequest(){
 
+    private val authMap = mapOf<String,String?>("Authorization" to "Token "+prefs.getToken())
+
     suspend fun getPopularTrips(): List<Trip>{
         //TODO:check if fetch needed by db
 
-        val map = mapOf<String,String?>("Authorization" to "Token "+prefs.getToken())
-        val response=apiRequest { api.getPopularTrips(map) }
+        val response=apiRequest { api.getPopularTrips(authMap) }
         return response.trips
     }
 
+    suspend fun getTripsNearMe(): List<Trip>{
+        //TODO:check if fetch needed by db
+
+        val queryMap = mapOf<String,Double>("lat" to 5.0, "lon" to 5.0, "radius" to 1.0)
+        val response=apiRequest { api.getTripsNearMe(authMap, queryMap) }
+        return response.trips
+    }
 }
