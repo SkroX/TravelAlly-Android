@@ -66,9 +66,10 @@ class HomeFragment() : Fragment(), KodeinAware, HomeListener{
                 .requestEmail()
                 .requestIdToken(resources.getString(R.string.google_client_id))
                 .build()
-
         val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(activity as MainActivity, gso);
+
         val factory= HomeViewModelFacotry(mGoogleSignInClient, userRepo, tripsRepository)
+
         val binding: FragmentHomeBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         val homeViewModel:HomeViewModel by viewModels{factory}

@@ -26,7 +26,8 @@ class TripsRepository (private val api: MyApi, private val db: AppDatabase,
     suspend fun getTripsNearMe(): List<Trip>{
         //TODO:check if fetch needed by db
 
-        val queryMap = mapOf<String,Double>("lat" to 5.0, "lon" to 5.0, "radius" to 1.0)
+        val  queryMap = mapOf<String,Double>("lat" to (prefs.getLat() ?: 0.0), "lon" to (prefs.getLon() ?: 0.0), "radius" to (prefs.getRadius() ?: 0.0) )
+
         val response=apiRequest { api.getTripsNearMe(authMap, queryMap) }
         return response.trips
     }
