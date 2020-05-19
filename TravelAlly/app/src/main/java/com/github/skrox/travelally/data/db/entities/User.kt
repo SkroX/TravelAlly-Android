@@ -2,7 +2,6 @@ package com.github.skrox.travelally.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import retrofit2.http.Url
 
 const val CURRENT_USER_ID=0
 

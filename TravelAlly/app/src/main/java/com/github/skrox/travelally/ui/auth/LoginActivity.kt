@@ -7,47 +7,50 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.github.skrox.travelally.R
-import com.github.skrox.travelally.data.db.AppDatabase
-import com.github.skrox.travelally.data.db.entities.User
-import com.github.skrox.travelally.data.network.MyApi
-import com.github.skrox.travelally.data.network.NetworkConnectionInterceptor
-import com.github.skrox.travelally.data.preferences.PreferenceProvider
+import com.github.skrox.travelally.TravelAllyApplication
 import com.github.skrox.travelally.data.repositories.UserRepository
 import com.github.skrox.travelally.databinding.ActivityLoginBinding
+import com.github.skrox.travelally.di.LoginComponent
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.util.ActivityNavigation
 import com.github.skrox.travelally.util.hide
 import com.github.skrox.travelally.util.show
 import com.github.skrox.travelally.util.snackbar
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import kotlinx.android.synthetic.main.activity_login.*
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
+import javax.inject.Inject
 
 
-class LoginActivity : AppCompatActivity(), ActivityNavigation, KodeinAware, AuthListener{
+class LoginActivity : AppCompatActivity(), ActivityNavigation, AuthListener{
 
-    override val kodein by kodein()
-    private val userRepo:UserRepository by instance<UserRepository>()
+
+    @Inject lateinit var userRepo:UserRepository
+    @Inject lateinit var mGoogleSignInClient:GoogleSignInClient
+    @Inject lateinit var factory: AuthViewModelFactory
+
+    lateinit var loginComponent:LoginComponent
 
     private lateinit var vm:AuthViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val gso =
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestIdToken(resources.getString(R.string.google_client_id))
-                .build()
 
-        val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // Creates an instance of Registration component by grabbing the factory from the app graph
+        loginComponent = (application as TravelAllyApplication).appComponent.LoginComponent().create(this)
+        // Injects this activity to the just created registration component
+        loginComponent.inject(this)
+
+        super.onCreate(savedInstanceState)
+
+//        val gso =
+//            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestEmail()
+//                .requestIdToken(resources.getString(R.string.google_client_id))
+//                .build()
+//
+//        val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(this, gso);
 //        val userReposiotry = UserRepository(MyApi(NetworkConnectionInterceptor(this)), AppDatabase.invoke(this),
 //            PreferenceProvider(this)
 //        )
-        val factory=AuthViewModelFactory(mGoogleSignInClient, userRepo)
+
         val viewModel: AuthViewModel by viewModels{factory}
         vm = viewModel
 

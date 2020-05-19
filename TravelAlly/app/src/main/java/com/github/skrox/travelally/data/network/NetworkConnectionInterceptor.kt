@@ -8,8 +8,11 @@ import androidx.annotation.RequiresApi
 import com.github.skrox.travelally.util.NoInternetException
 import okhttp3.Interceptor
 import okhttp3.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NetworkConnectionInterceptor(
+@Singleton
+class NetworkConnectionInterceptor @Inject constructor(
     context: Context
 ) : Interceptor {
 

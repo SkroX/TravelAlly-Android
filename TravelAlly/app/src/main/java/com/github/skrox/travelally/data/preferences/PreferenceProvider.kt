@@ -1,16 +1,17 @@
 package com.github.skrox.travelally.data.preferences
 import android.content.Context
 import android.content.SharedPreferences
-import android.text.method.KeyListener
 import androidx.preference.PreferenceManager
-import java.security.KeyRep
+import javax.inject.Inject
+import javax.inject.Singleton
 
 private const val KEY_TOKEN = "token"
 private const val KEY_LAT = "lat"
 private const val KEY_LON = "lon"
 private const val KEY_RADIUS = "radius"
 
-class PreferenceProvider(
+@Singleton
+class PreferenceProvider @Inject constructor(
     context: Context
 ) {
 

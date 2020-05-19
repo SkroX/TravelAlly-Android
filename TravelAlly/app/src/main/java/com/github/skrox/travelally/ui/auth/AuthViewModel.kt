@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.skrox.travelally.data.repositories.UserRepository
 import com.github.skrox.travelally.util.ActivityNavigation

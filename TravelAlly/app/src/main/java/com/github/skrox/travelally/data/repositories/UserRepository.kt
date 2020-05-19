@@ -1,11 +1,9 @@
 package com.github.skrox.travelally.data.repositories
 
-import android.app.Activity
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.github.skrox.travelally.data.db.AppDatabase
 import com.github.skrox.travelally.data.network.MyApi
 import com.github.skrox.travelally.data.network.SafeApiRequest
 import com.github.skrox.travelally.data.network.postobjects.SendToken
@@ -13,12 +11,12 @@ import com.github.skrox.travelally.data.network.responses.AuthResponse
 import com.github.skrox.travelally.data.preferences.PreferenceProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.tasks.OnCompleteListener
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class UserRepository(private val api:MyApi,
-                    private val db:AppDatabase,
+@Singleton
+class UserRepository @Inject constructor(private val api:MyApi,
+//                    private val db:AppDatabase,
                     private val prefs: PreferenceProvider
 ) : SafeApiRequest() {
 
