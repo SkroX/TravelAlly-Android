@@ -1,11 +1,18 @@
 package com.github.skrox.travelally.data.db.entities
 
+import android.util.Log
+import android.view.View
+
 data class Trip(val id:Int, val start_time: String, val end_time:String,
                 val additional_info:String?, val extra_people: List<Int>,
                 val start_lat: Double, val start_lon: Double,
                 val end_lat: Double, val end_lon:Double,
                 val start_name:String?, val dest_name:String?,
-                val voters: List<Int>, val organizer:Int, val image: String?)
+                val voters: List<Int>, val organizer:Int, val image: String?){
+    fun onClick(view: View){
+        Log.e("clickedtrip",this.start_time)
+    }
+}
 
 
 //{

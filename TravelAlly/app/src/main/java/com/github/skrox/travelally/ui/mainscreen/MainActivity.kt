@@ -13,6 +13,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.github.skrox.travelally.R
+import com.github.skrox.travelally.TravelAllyApplication
+import com.github.skrox.travelally.di.MainComponent
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
@@ -21,10 +23,17 @@ import com.google.android.material.snackbar.Snackbar
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-     lateinit var factory: ViewModelProvider.Factory
+    lateinit var factory: ViewModelProvider.Factory
     lateinit var mGoogleSignInClient:GoogleSignInClient
 
+    lateinit var mainComponent: MainComponent
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        mainComponent = (application as TravelAllyApplication).appComponent.MainComponent().create(this)
+        // Injects this activity to the just created registration component
+        mainComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.e("created","Mainactivity")

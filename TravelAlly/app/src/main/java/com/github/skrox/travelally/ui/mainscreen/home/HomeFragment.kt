@@ -17,6 +17,7 @@ import com.github.skrox.travelally.TravelAllyApplication
 import com.github.skrox.travelally.data.db.entities.Trip
 import com.github.skrox.travelally.databinding.FragmentHomeBinding
 import com.github.skrox.travelally.di.MainComponent
+import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.util.snackbar
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.xwray.groupie.ExpandableGroup
@@ -24,7 +25,10 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.item_expandable_header.view.*
+import kotlinx.android.synthetic.main.item_trip.view.*
 import javax.inject.Inject
+import kotlin.reflect.typeOf
 
 
 class HomeFragment() : Fragment(), HomeListener{
@@ -32,19 +36,15 @@ class HomeFragment() : Fragment(), HomeListener{
     @Inject lateinit var mGoogleSignInClient: GoogleSignInClient
     @Inject lateinit var factory:HomeViewModelFacotry
 
-    private lateinit var homeVM:HomeViewModel
-
-    private val excitingSection = Section()
-
     private lateinit var mAdapter:GroupAdapter<ViewHolder>
 
-    lateinit var mainComponent:MainComponent
+    private val homeViewModel:HomeViewModel by viewModels{factory}
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        mainComponent = (requireActivity().application as TravelAllyApplication).appComponent.MainComponent().create(requireActivity())
-        // Injects this activity to the just created registration component
-        mainComponent.inject(this)
+        (activity as MainActivity).mainComponent.inject(this)
+
     }
 
     override fun onCreateView(
@@ -65,12 +65,8 @@ class HomeFragment() : Fragment(), HomeListener{
 
         val binding: FragmentHomeBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-        val homeViewModel:HomeViewModel by viewModels{factory}
         binding.viewmodel = homeViewModel
         binding.lifecycleOwner = this
-
-        homeVM=homeViewModel
-
         homeViewModel.homeListener=this
         return binding.root
     }
@@ -87,31 +83,31 @@ class HomeFragment() : Fragment(), HomeListener{
     private fun bindUI(){
 
 
-        homeVM.loadPopularTrips()
-        homeVM.loadTripsNearMe()
-        homeVM.loadAllTrips()
+        homeViewModel.loadPopularTrips()
+        homeViewModel.loadTripsNearMe()
+        homeViewModel.loadAllTrips()
         initRecyclerView()
-        context?.let {
-            homeVM.getuser(it).observe(viewLifecycleOwner, Observer {
-//                text_home.text=it?.idToken
-            })
-        }
+//        context?.let {
+//            homeVM.getuser(it).observe(viewLifecycleOwner, Observer {
+////                text_home.text=it?.idToken
+//            })
+//        }
 
-        homeVM._popularTrips.observe(viewLifecycleOwner, Observer {
+        homeViewModel._popularTrips.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()){
                 Log.e("populartrip",it.size.toString())
                 addSection(it.toTripItem(), "Popular Trips")
             }
         })
 
-        homeVM._tripsNearMe.observe(viewLifecycleOwner, Observer {
+        homeViewModel._tripsNearMe.observe(viewLifecycleOwner, Observer {
 
             Log.e("nearmetrip", it.size.toString())
             addSection(it.toTripItem(), "Near Me")
 
         })
 
-        homeVM._allTrips.observe(viewLifecycleOwner, Observer {
+        homeViewModel._allTrips.observe(viewLifecycleOwner, Observer {
             Log.e("all trips", it.size.toString())
             addSection(it.toTripItem(), "All Trips")
         })
@@ -135,10 +131,12 @@ class HomeFragment() : Fragment(), HomeListener{
             adapter=mAdapter
 
         }
-
     }
 
     private fun addSection(tripItem: List<TripItem>, name: String){
+
+        val excitingSection = Section()
+        Log.e(name,tripItem.size.toString())
         ExpandableGroup(ExpandableHeaderItem(name), true).apply {
             excitingSection.addAll(tripItem)
             add(excitingSection)

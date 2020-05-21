@@ -3,6 +3,7 @@ package com.github.skrox.travelally.di
 import android.app.Activity
 import android.content.Context
 import com.github.skrox.travelally.ui.auth.LoginActivity
+import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.ui.mainscreen.home.HomeFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -50,6 +51,7 @@ interface MainComponent{
     }
 
     fun inject(fragment: HomeFragment)
+    fun inject(activity: MainActivity)
 
 }
 

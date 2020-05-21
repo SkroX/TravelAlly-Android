@@ -1,6 +1,7 @@
 package com.github.skrox.travelally.ui.mainscreen.home
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,6 +32,10 @@ class HomeViewModel( private val userRepository: UserRepository,
                 userRepository.logout()
             })
     }
+
+    init {
+        Log.e("homevm",this.toString())
+    }
 //    val popularTrips:LiveData<List<Trip>> = liveData {
 //
 //        try {
@@ -53,41 +58,41 @@ class HomeViewModel( private val userRepository: UserRepository,
     val _allTrips : LiveData<List<Trip>> = allTrips
 
     fun loadPopularTrips()=viewModelScope.launch(Dispatchers.IO){
-        try {
-            val trips=tripsRepository.getPopularTrips()
-            popularTrips.postValue(trips)
-        }catch (e:Exception){
-            homeListener?.onFailure(e.message ?: "Unknown cause")
-            e.printStackTrace()
+
+        if(popularTrips.value==null){
+            try {
+                val trips=tripsRepository.getPopularTrips()
+                popularTrips.postValue(trips)
+            }catch (e:Exception){
+                homeListener?.onFailure(e.message ?: "Unknown cause")
+                e.printStackTrace()
+            }
         }
+
 
     }
 
     fun loadTripsNearMe()=viewModelScope.launch(Dispatchers.IO) {
-        try {
-            val trips = tripsRepository.getTripsNearMe()
-            tripsNearMe.postValue(trips)
-        }catch (e:Exception){
-            homeListener?.onFailure(e.message ?: "Unknown cause")
-            e.printStackTrace()
+        if(tripsNearMe.value==null){
+            try {
+                val trips = tripsRepository.getTripsNearMe()
+                tripsNearMe.postValue(trips)
+            }catch (e:Exception){
+                homeListener?.onFailure(e.message ?: "Unknown cause")
+                e.printStackTrace()
+            }
         }
     }
 
     fun loadAllTrips()=viewModelScope.launch(Dispatchers.IO) {
-        try {
-            val trips = tripsRepository.getAllTrips()
-            allTrips.postValue(trips)
-        }catch (e: Exception){
-            homeListener?.onFailure(e.message ?: "Unknown cause")
-            e.printStackTrace()
+        if(allTrips.value==null){
+            try {
+                val trips = tripsRepository.getAllTrips()
+                allTrips.postValue(trips)
+            }catch (e: Exception){
+                homeListener?.onFailure(e.message ?: "Unknown cause")
+                e.printStackTrace()
+            }
         }
     }
-
-
-
-
-
-
-
-
 }
