@@ -35,4 +35,8 @@ class TripsRepository @Inject constructor(private val api: MyApi,
 
         return apiRequest { api.getAllTrips(authMap) }
     }
+
+    suspend fun getTrip(id: Int): Trip{
+        return apiRequest { api.getTrip(id,authMap) }
+    }
 }

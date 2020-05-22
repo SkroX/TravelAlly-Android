@@ -2,6 +2,10 @@ package com.github.skrox.travelally.data.db.entities
 
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import com.github.skrox.travelally.R
 
 data class Trip(val id:Int, val start_time: String, val end_time:String,
                 val additional_info:String?, val extra_people: List<Int>,
@@ -11,6 +15,9 @@ data class Trip(val id:Int, val start_time: String, val end_time:String,
                 val voters: List<Int>, val organizer:Int, val image: String?){
     fun onClick(view: View){
         Log.e("clickedtrip",this.start_time)
+        val navController= Navigation.findNavController(view)
+        val bundle = bundleOf("tripId" to this.id)
+        navController.navigate(R.id.action_nav_home_to_tripDetailFragment, bundle)
     }
 }
 

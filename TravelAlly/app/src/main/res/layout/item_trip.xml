@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            tools:text="@{trip.start_time}"
+            android:text="@{trip.start_time}"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:textSize="20sp"/>
 

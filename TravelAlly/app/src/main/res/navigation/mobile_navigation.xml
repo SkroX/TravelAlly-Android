@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
             app:destination="@id/nav_home_second" />
+        <action
+            android:id="@+id/action_nav_home_to_tripDetailFragment"
+            app:destination="@id/tripDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_home_second"
@@ -40,4 +43,14 @@
         android:name="com.github.skrox.travelally.ui.mainscreen.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/tripDetailFragment"
+        android:name="com.github.skrox.travelally.ui.mainscreen.tripdetail.TripDetailFragment"
+        android:label="trip_detail_fragment"
+        tools:layout="@layout/trip_detail_fragment" >
+        <argument
+            android:name="tripId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

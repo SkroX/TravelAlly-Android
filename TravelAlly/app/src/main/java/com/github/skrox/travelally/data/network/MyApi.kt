@@ -30,23 +30,26 @@ interface MyApi {
     @GET("trips/trips")
     suspend fun getAllTrips(@HeaderMap headers: Map<String, String?>): Response<List<Trip>>
 
-    companion object{
-        operator fun invoke(
-            networkConnectionInterceptor: NetworkConnectionInterceptor
-        ) : MyApi{
+    @GET("trips/trips/{id}")
+    suspend fun getTrip(@Path("id") id:Int, @HeaderMap headers: Map<String, String?>): Response<Trip>
 
-            val okkHttpclient = OkHttpClient.Builder()
-                .addInterceptor(networkConnectionInterceptor)
-                .build()
-
-            return Retrofit.Builder()
-                .client(okkHttpclient)
-                .baseUrl("http://192.168.1.110:8080/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(MyApi::class.java)
-        }
-    }
+//    companion object{
+//        operator fun invoke(
+//            networkConnectionInterceptor: NetworkConnectionInterceptor
+//        ) : MyApi{
+//
+//            val okkHttpclient = OkHttpClient.Builder()
+//                .addInterceptor(networkConnectionInterceptor)
+//                .build()
+//
+//            return Retrofit.Builder()
+//                .client(okkHttpclient)
+//                .baseUrl("http://192.168.1.110:8080/api/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//                .create(MyApi::class.java)
+//        }
+//    }
 
 }
 

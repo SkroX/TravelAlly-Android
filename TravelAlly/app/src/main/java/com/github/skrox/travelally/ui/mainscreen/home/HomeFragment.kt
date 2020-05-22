@@ -11,12 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.skrox.travelally.R
-import com.github.skrox.travelally.TravelAllyApplication
 import com.github.skrox.travelally.data.db.entities.Trip
 import com.github.skrox.travelally.databinding.FragmentHomeBinding
-import com.github.skrox.travelally.di.MainComponent
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.util.snackbar
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -25,10 +22,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.item_expandable_header.view.*
-import kotlinx.android.synthetic.main.item_trip.view.*
 import javax.inject.Inject
-import kotlin.reflect.typeOf
 
 
 class HomeFragment() : Fragment(), HomeListener{
