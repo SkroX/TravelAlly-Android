@@ -47,4 +47,4 @@ Make a pull request.
 
 # Server Side
 
-The back-end for this app is written in Django rest framework and can be found at : https://github.com/SkroX/travelally2
+The back-end for this app is written in Django rest framework and can be found at : https://github.com/SkroX/TravelAlly-Backend
