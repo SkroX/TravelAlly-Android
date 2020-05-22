@@ -47,4 +47,4 @@ Read about them here: https://kotlinlang.org/docs/reference/coroutines-overview.
 
 # Server Side
 
-The back-end for this app is written in Django rest framework and can be found at : [TravelAlly Backend] (https://github.com/SkroX/TravelAlly-Backend)
+The back-end for this app is written in Django rest framework and can be found at : [TravelAlly Backend](https://github.com/SkroX/TravelAlly-Backend)
