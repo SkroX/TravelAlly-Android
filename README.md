@@ -18,33 +18,33 @@ Read about them here: https://kotlinlang.org/docs/reference/coroutines-overview.
 
 # Building the Code
 
-Clone the repository using HTTP: git clone https://github.com/SkroX/TravelAlly-Android.git
+- Clone the repository using HTTP: `git clone https://github.com/SkroX/TravelAlly-Android.git`
 
-Open Android Studio.
+- Open Android Studio.
 
-Click on 'Open an existing Android Studio project'
+- Click on 'Open an existing Android Studio project'
 
-Browse to the directory where you cloned the mobile-wallet repo and click OK.
+- Browse to the directory where you cloned the mobile-wallet repo and click OK.
 
-Let Android Studio import the project.
+- Let Android Studio import the project.
 
-Build the application in your device by clicking run button.
+- Build the application in your device by clicking run button.
 
 # Contribution
 
-I will be happy to invite new contributors.
+- I will be happy to invite new contributors.
 
-Fork the project to your own account.
+- Fork the project to your own account.
 
-Create your new branch using 
-git checkout -b [your branch name]
+- Create your new branch using 
+`git checkout -b [your branch name]`
   
-Make sure the changes you made are of good quality and the project is building successfully.
+- Make sure the changes you made are of good quality and the project is building successfully.
   
-Commit your changes to this branch.
+- Commit your changes to this branch with `git commit -m "meaningful message"`
 
-Make a pull request.
+- Make a pull request.
 
 # Server Side
 
-The back-end for this app is written in Django rest framework and can be found at : https://github.com/SkroX/TravelAlly-Backend
+The back-end for this app is written in Django rest framework and can be found at : [TravelAlly Backend] (https://github.com/SkroX/TravelAlly-Backend)
