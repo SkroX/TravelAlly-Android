@@ -44,3 +44,7 @@ Make sure the changes you made are of good quality and the project is building s
 Commit your changes to this branch.
 
 Make a pull request.
+
+# Server Side
+
+The back-end for this app is written in Django rest framework and can be found at : https://github.com/SkroX/travelally2
