@@ -1,5 +1,6 @@
 package com.github.skrox.travelally.data.repositories
 
+import android.util.Log
 import com.github.skrox.travelally.data.db.entities.Trip
 import com.github.skrox.travelally.data.network.MyApi
 import com.github.skrox.travelally.data.network.SafeApiRequest
@@ -18,7 +19,10 @@ class TripsRepository @Inject constructor(private val api: MyApi,
         //TODO:check if fetch needed by db
 
         val response=apiRequest { api.getPopularTrips(authMap) }
+        Log.e("triprepo", response.trips.size.toString())
         return response.trips
+
+
     }
 
     suspend fun getTripsNearMe(): List<Trip>{

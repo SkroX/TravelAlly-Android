@@ -4,10 +4,7 @@ import com.github.skrox.travelally.data.db.entities.Trip
 import com.github.skrox.travelally.data.network.postobjects.SendToken
 import com.github.skrox.travelally.data.network.responses.AuthResponse
 import com.github.skrox.travelally.data.network.responses.TripsResponse
-import okhttp3.OkHttpClient
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 import javax.inject.Singleton
 

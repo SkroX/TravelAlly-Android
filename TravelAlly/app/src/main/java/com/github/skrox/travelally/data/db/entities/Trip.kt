@@ -3,7 +3,6 @@ package com.github.skrox.travelally.data.db.entities
 import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.github.skrox.travelally.R
 

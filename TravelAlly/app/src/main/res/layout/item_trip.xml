@@ -1,36 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
             name="trip"
             type="com.github.skrox.travelally.data.db.entities.Trip" />
+
+        <variable
+            name="vm"
+            type="com.github.skrox.travelally.ui.mainscreen.home.HomeViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{trip::onClick}"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
-        app:cardUseCompatPadding="true"
-        android:onClick="@{trip::onClick}">
+        app:cardUseCompatPadding="true">
 
-        <TextView
-            android:id="@+id/item_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@{trip.start_time}"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:textSize="20sp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:padding="8dp"
+                app:image="@{trip.image}"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/sorucetodest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_below="@+id/imageView2"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:gravity="center"
+                tools:text="abcdefghtdgjfvdsdf - fbdnjnjdvsffbnfbsdv"
+                android:text="@{trip.start_name + ` - ` + trip.dest_name}"/>
+
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="16dp"
+                android:padding="8dp"
+                android:tint="@color/colorPrimaryDark"
+                app:srcCompat="@android:drawable/arrow_up_float"
+                android:layout_below="@+id/sorucetodest"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/votes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="4dp"
+                android:padding="8dp"
+                tools:text="87"
+                android:text="@{String.valueOf(trip.voters.size())}"
+                android:maxLines="3"
+                app:autoSizeMaxTextSize="15sp"
+                app:autoSizeMinTextSize="7sp"
+                app:autoSizeTextType="uniform"
+                android:layout_alignTop="@+id/imageView3"
+                android:layout_toEndOf="@+id/imageView3"
+                android:layout_marginBottom="8dp"/>
+
+        </RelativeLayout>
+
 
     </androidx.cardview.widget.CardView>
 

@@ -115,7 +115,7 @@ class HomeFragment() : Fragment(), HomeListener{
 
         mAdapter = GroupAdapter<ViewHolder>().apply {
 //            addAll(tripItem)
-            spanCount=3
+            spanCount=2
         }
         recyclerView.apply {
             layoutManager=GridLayoutManager(this@HomeFragment.context, mAdapter.spanCount).apply {
