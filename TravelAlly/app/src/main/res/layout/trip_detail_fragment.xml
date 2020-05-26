@@ -5,21 +5,171 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="trip"
             type="com.github.skrox.travelally.ui.mainscreen.tripdetail.TripDetailViewModel" />
     </data>
 
-    <FrameLayout
+    <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.mainscreen.tripdetail.TripDetailFragment">
+        android:layout_height="match_parent">
 
-        <TextView
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@{trip.trip.start_time}" />
+            android:layout_height="match_parent">
 
-    </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/organizerImageView"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        tools:srcCompat="@tools:sample/avatars"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"/>
+                    <TextView
+                        android:id="@+id/organizerTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/organizerImageView"
+                        android:text="Shubham"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:layout_alignBottom="@+id/organizerImageView"
+                        android:layout_alignTop="@+id/organizerImageView"
+                        android:textSize="15sp"/>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/organizerTextView"
+                        android:layout_margin="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:cardCornerRadius="16dp"
+                        android:layout_centerHorizontal="true">
+
+                        <ImageView
+                            android:layout_width="250dp"
+                            android:layout_height="250dp"
+                            android:layout_gravity="center_horizontal"
+                            android:cropToPadding="true"
+                            android:foreground="@color/bg"
+                            app:image="@{trip.trip.image}" />
+
+                        <TextView
+                            android:id="@+id/fromTo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal|bottom"
+                            android:layout_margin="16dp"
+                            android:backgroundTint="@color/bg"
+                            android:padding="8dp"
+                            android:text="@{trip.trip.start_name + ` to ` + trip.trip.dest_name}"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textColorHighlight="@color/white"
+                            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"/>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <LinearLayout
+                        android:id="@+id/voters"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/cardView"
+                        android:gravity="center_horizontal"
+                        android:layout_centerHorizontal="true">
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:layout_weight="1"
+                            android:text="@{`voters: `+ trip.trip.voters.size()}"
+                            android:typeface="serif"
+                            android:gravity="center_horizontal"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:padding="8dp"
+                            android:textColor="@color/black"
+                            android:layout_weight="1"
+                            android:text="@{`People: ` + trip.trip.extra_people.size()}"
+                            android:typeface="serif"
+                            android:gravity="center_horizontal"/>
+
+                    </LinearLayout>
+
+
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/voters"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/colorAccent"
+                        android:padding="8dp"
+                        android:textColor="@color/white"
+                        android:text="@{`Start Date: `+ trip.trip.start_time + `\nEnd Date: ` + trip.trip.end_time}"
+                        android:typeface="serif" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/date"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/colorAccent"
+                        android:padding="8dp"
+                        android:textColor="@color/white"
+                        android:text="@{`Additional Info: `+ trip.trip.additional_info}"
+                        android:typeface="serif" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:text="Request To Join"
+            android:textColor="@color/white"/>
+
+
+    </com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout>
+
 
 </layout>

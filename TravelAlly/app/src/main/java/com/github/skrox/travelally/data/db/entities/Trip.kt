@@ -5,8 +5,11 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import com.github.skrox.travelally.R
+import java.text.SimpleDateFormat
+import java.util.*
 
-data class Trip(val id:Int, val start_time: String, val end_time:String,
+
+data class Trip(val id:Int, var start_time: String, var end_time:String,
                 val additional_info:String?, val extra_people: List<Int>,
                 val start_lat: Double, val start_lon: Double,
                 val end_lat: Double, val end_lon:Double,
@@ -18,6 +21,7 @@ data class Trip(val id:Int, val start_time: String, val end_time:String,
         val bundle = bundleOf("tripId" to this.id)
         navController.navigate(R.id.action_nav_home_to_tripDetailFragment, bundle)
     }
+
 }
 
 
