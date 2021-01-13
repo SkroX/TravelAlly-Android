@@ -5,6 +5,7 @@ import android.content.Context
 import com.github.skrox.travelally.ui.auth.LoginActivity
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.ui.mainscreen.home.HomeFragment
+import com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripFragment
 import com.github.skrox.travelally.ui.mainscreen.tripdetail.TripDetailFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -12,7 +13,7 @@ import dagger.Subcomponent
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [UtilsModule::class, AppSubcomponents::class])
+@Component(modules = [UtilsModule::class, AppSubcomponents::class, PlacesAPiModule::class])
 interface AppComponent {
 
     // Factory to create instances of the AppComponent
@@ -26,6 +27,8 @@ interface AppComponent {
     fun LoginComponent(): LoginComponent.Factory
 
     fun MainComponent(): MainComponent.Factory
+
+    fun inject(frament:PostTripFragment)
 
 }
 

@@ -4,6 +4,7 @@ import android.util.Log
 import com.github.skrox.travelally.data.db.entities.Trip
 import com.github.skrox.travelally.data.network.MyApi
 import com.github.skrox.travelally.data.network.SafeApiRequest
+import com.github.skrox.travelally.data.network.postobjects.PostTrip
 import com.github.skrox.travelally.data.preferences.PreferenceProvider
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,5 +43,9 @@ class TripsRepository @Inject constructor(private val api: MyApi,
 
     suspend fun getTrip(id: Int): Trip{
         return apiRequest { api.getTrip(id,authMap) }
+    }
+
+    suspend fun postTrip(trip: PostTrip): Trip{
+        return apiRequest { api.postTrip(authMap,trip) }
     }
 }

@@ -6,10 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.skrox.travelally.R
 import com.github.skrox.travelally.data.db.entities.Trip
@@ -21,6 +25,7 @@ import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -33,6 +38,8 @@ class HomeFragment() : Fragment(), HomeListener{
     private lateinit var mAdapter:GroupAdapter<ViewHolder>
 
     private val homeViewModel:HomeViewModel by viewModels{factory}
+
+    private lateinit var navController:NavController
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -62,16 +69,19 @@ class HomeFragment() : Fragment(), HomeListener{
         binding.viewmodel = homeViewModel
         binding.lifecycleOwner = this
         homeViewModel.homeListener=this
+
+        navController= this.findNavController()
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+//        navController.navigate(R.id.action_nav_home_to_postTripFragment)
         bindUI()
     }
 
     override fun onFailure(message:String) {
-        root_layout.snackbar(message)
+//        root_layout.snackbar(message)
     }
 
     private fun bindUI(){

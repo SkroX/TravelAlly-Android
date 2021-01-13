@@ -1,17 +1,21 @@
 package com.github.skrox.travelally.di
 
 import android.app.Activity
+import android.content.Context
 import com.github.skrox.travelally.R
 import com.github.skrox.travelally.data.network.MyApi
 import com.github.skrox.travelally.data.network.NetworkConnectionInterceptor
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 class UtilsModule{
@@ -29,7 +33,7 @@ class UtilsModule{
     fun MyApiProvider(okkHttpclient:OkHttpClient):MyApi{
         return Retrofit.Builder()
                 .client(okkHttpclient)
-                .baseUrl("http://192.168.1.110:8080/api/")
+                .baseUrl("http://192.168.1.10:8080/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(MyApi::class.java)
@@ -51,6 +55,23 @@ class LoginModule{
 
         return mGoogleSignInClient
     }
+
+}
+
+@Module
+class PlacesAPiModule{
+
+    @Singleton
+    @Provides
+    fun PlacesClientProvider(context: Context):PlacesClient{
+        // Initialize the SDK
+        Places.initialize(context.applicationContext, context.getString(R.string.google_place_api_key));
+
+        // Create a new Places client instance
+        val placesClient: PlacesClient  = Places.createClient(context);
+        return  placesClient
+    }
+
 
 }
 

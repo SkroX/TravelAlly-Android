@@ -5,19 +5,19 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import com.github.skrox.travelally.R
-import java.text.SimpleDateFormat
-import java.util.*
 
 
-data class Trip(val id:Int, var start_time: String, var end_time:String,
-                val additional_info:String?, val extra_people: List<Int>,
-                val start_lat: Double, val start_lon: Double,
-                val end_lat: Double, val end_lon:Double,
-                val start_name:String?, val dest_name:String?,
-                val voters: List<Int>, val organizer:Int, val image: String?){
-    fun onClick(view: View){
-        Log.e("clickedtrip",this.start_time)
-        val navController= Navigation.findNavController(view)
+data class Trip(
+    val id: Int, var start_time: String, var end_time: String,
+    val additional_info: String?, val extra_people: List<Int>,
+    val start_lat: Double, val start_lon: Double,
+    val end_lat: Double, val end_lon: Double,
+    val start_name: String?, val dest_name: String?,
+    val voters: List<Int>, val organizer: Int, val image: String?
+) {
+    fun onClick(view: View) {
+        Log.e("clickedtrip", this.start_time)
+        val navController = Navigation.findNavController(view)
         val bundle = bundleOf("tripId" to this.id)
         navController.navigate(R.id.action_nav_home_to_tripDetailFragment, bundle)
     }

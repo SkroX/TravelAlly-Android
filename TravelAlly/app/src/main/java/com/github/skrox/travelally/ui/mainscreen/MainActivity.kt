@@ -16,15 +16,19 @@ import com.github.skrox.travelally.R
 import com.github.skrox.travelally.TravelAllyApplication
 import com.github.skrox.travelally.di.MainComponent
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var factory: ViewModelProvider.Factory
     lateinit var mGoogleSignInClient:GoogleSignInClient
+
+    @Inject lateinit var placesClient: PlacesClient
 
     lateinit var mainComponent: MainComponent
 
@@ -40,14 +44,15 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
+
+        val fab: FloatingActionButton = findViewById(R.id.fab)
+        fab.setOnClickListener { view ->
+            navController.navigate(R.id.action_nav_home_to_postTripFragment)
+        }
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
