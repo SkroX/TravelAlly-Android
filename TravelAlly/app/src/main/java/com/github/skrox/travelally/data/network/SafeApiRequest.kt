@@ -30,6 +30,7 @@ abstract class SafeApiRequest {
                 throw ApiException(message.toString())
             }
         }catch (e:Exception){
+            e.printStackTrace()
             throw ApiException(e.message?:e.toString())
         }
     }
