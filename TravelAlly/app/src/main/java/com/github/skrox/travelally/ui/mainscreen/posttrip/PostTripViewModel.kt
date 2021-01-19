@@ -2,6 +2,8 @@ package com.github.skrox.travelally.ui.mainscreen.posttrip
 
 import android.util.Log
 import android.view.View.OnFocusChangeListener
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +11,7 @@ import com.github.skrox.travelally.data.network.postobjects.PostTrip
 import com.github.skrox.travelally.data.repositories.TripsRepository
 import com.github.skrox.travelally.ui.mainscreen.posttrip.temp.PostTripFormFields
 import kotlinx.coroutines.launch
+
 
 class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewModel() {
 
@@ -22,6 +25,8 @@ class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewMode
     private var endLon: Double = 0.0
     private lateinit var startName: String
     private lateinit var destName: String
+    var liveStartDate: MutableLiveData<String> = MutableLiveData()
+    var liveEndDate: MutableLiveData<String> = MutableLiveData()
 
     private var trip: PostTrip? = null
 
@@ -92,6 +97,16 @@ class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewMode
     fun getForm(): PostTripForm {
         return post
     }
+
+    companion object{
+        @JvmStatic
+        @BindingAdapter("bindServerDate")
+        fun bindServerDate(textView: TextView, date: String?) {
+            /*Parse string data and set it in another format for your textView*/
+            textView.text = date
+        }
+    }
+
 
 //    companion object {
 //        @JvmStatic

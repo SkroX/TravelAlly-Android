@@ -5,6 +5,7 @@ import android.content.Context
 import com.github.skrox.travelally.ui.auth.LoginActivity
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.ui.mainscreen.home.HomeFragment
+import com.github.skrox.travelally.ui.mainscreen.posttrip.DatePickerFragment
 import com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripFragment
 import com.github.skrox.travelally.ui.mainscreen.tripdetail.TripDetailFragment
 import dagger.BindsInstance
@@ -29,6 +30,7 @@ interface AppComponent {
     fun MainComponent(): MainComponent.Factory
 
     fun inject(frament:PostTripFragment)
+    fun inject(frament:DatePickerFragment)
 
 }
 

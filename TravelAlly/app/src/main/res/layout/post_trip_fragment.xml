@@ -13,6 +13,10 @@
         <variable
             name="viewmodel"
             type="com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripFragment" />
     </data>
 
     <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
@@ -62,14 +66,18 @@
                     android:layout_below="@+id/imageCardView"
                     android:layout_margin="16dp"
                     android:background="@color/white"
+                    android:onClick="@{(v)-> fragment.showDatePickerDialog(v)}"
                     android:padding="8dp">
+                    <!--                    android:onClick="@{(v) ->  fragment.pickDate(v)}"-->
 
-                    <com.google.android.material.textfield.TextInputEditText
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/start_date_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="start date"
                         android:text="@={viewmodel.form.fields.start_time}"
-                         />
+                        app:bindServerDate="@{viewmodel.liveStartDate}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -80,14 +88,16 @@
                     android:layout_below="@+id/start_date"
                     android:layout_margin="16dp"
                     android:background="@color/white"
+                    android:onClick="@{(v)-> fragment.showDatePickerDialog(v)}"
                     android:padding="8dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/end_date_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="end date"
                         android:text="@={viewmodel.form.fields.end_time}"
-                         />
+                        app:bindServerDate="@{viewmodel.liveEndDate}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textview.MaterialTextView
@@ -130,15 +140,15 @@
                     android:layout_below="@+id/end_place"
                     android:layout_margin="16dp"
                     android:background="@color/white"
-                    android:padding="8dp"
-                    android:onClick="@{() -> viewmodel.onButtonClick()}">
+                    android:onClick="@{() -> viewmodel.onButtonClick()}"
+                    android:padding="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Description"
-                        android:text="@={viewmodel.description}"
-                        android:onClick="@{() -> viewmodel.onButtonClick()}"/>
+                        android:onClick="@{() -> viewmodel.onButtonClick()}"
+                        android:text="@={viewmodel.description}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!--                <com.google.android.material.textfield.TextInputLayout-->

@@ -1,17 +1,18 @@
 package com.github.skrox.travelally.ui.mainscreen.posttrip
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,8 +38,13 @@ import com.linkedin.android.spyglass.tokenization.impl.WordTokenizerConfig
 import com.linkedin.android.spyglass.tokenization.interfaces.QueryTokenReceiver
 import com.linkedin.android.spyglass.ui.MentionsEditText
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.nav_header_main.*
+import kotlinx.android.synthetic.main.nav_header_main.view.*
+import kotlinx.android.synthetic.main.post_trip_fragment.*
 import kotlinx.coroutines.runBlocking
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListener,
@@ -58,7 +64,10 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
     private val BUCKET = "members-network"
     private var editor: MentionsEditText? = null
 
-    private val postTripViewModel: PostTripViewModel by viewModels{factory}
+    private val REQUEST_CODE_START = 2
+    private val REQUEST_CODE_END = 3
+
+    private val postTripViewModel: PostTripViewModel by viewModels { factory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +77,7 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
             DataBindingUtil.inflate(inflater, R.layout.post_trip_fragment, container, false)
         binding.viewmodel = postTripViewModel
         binding.lifecycleOwner = this
+        binding.fragment = this;
         val tokenizerConfig = WordTokenizerConfig.Builder()
             .setWordBreakChars(", ")
             .setExplicitChars("")
@@ -240,6 +250,32 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
         postTripViewModel.addPeople(mention.suggestibleId)
     }
 
+    fun showDatePickerDialog(v: View) {
+        // get fragment manager so we can launch from fragment
+        val fm: FragmentManager = parentFragmentManager
+        // create the datePickerFragment
+        val newFragment = DatePickerFragment();
+        if (v.id == R.id.start_date)
+            newFragment.setTargetFragment(this, REQUEST_CODE_START);
+        else
+            newFragment.setTargetFragment(this, REQUEST_CODE_END);
+        // show the datePicker
+        fm.let { newFragment.show(it, "datePicker") }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // check for the results
+        if (resultCode == Activity.RESULT_OK) {
+            // get date from string
+            val date = data?.getStringExtra("selectedDate")
+            // set the value of the editText
+
+            if (requestCode == REQUEST_CODE_START)
+                postTripViewModel.liveStartDate.postValue(date)
+            else
+                postTripViewModel.liveEndDate.postValue(date)
+        }
+    }
 
     /* private fun setPlaceListeners() {
      // Initialize the AutocompleteSupportFragment.
@@ -293,6 +329,4 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
 
 
  }*/
-
-
 }
