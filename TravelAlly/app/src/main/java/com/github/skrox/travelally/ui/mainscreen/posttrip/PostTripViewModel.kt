@@ -11,24 +11,21 @@ import com.github.skrox.travelally.data.network.postobjects.PostTrip
 import com.github.skrox.travelally.data.repositories.TripsRepository
 import com.github.skrox.travelally.ui.mainscreen.posttrip.temp.PostTripFormFields
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 
 
 class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewModel() {
 
-    var startTime: String? = null
-    var endTime: String? = null
-    var description: String? = null
+    var description: String = ""
     private var extraPeople: MutableList<Int> = mutableListOf()
     private var startLat: Double = 0.0
     private var startLon: Double = 0.0
     private var endLat: Double = 0.0
     private var endLon: Double = 0.0
-    private lateinit var startName: String
-    private lateinit var destName: String
+    private var startName: String = "sd"
+    private var destName: String = "gsv"
     var liveStartDate: MutableLiveData<String> = MutableLiveData()
     var liveEndDate: MutableLiveData<String> = MutableLiveData()
-
-    private var trip: PostTrip? = null
 
     private var post: PostTripForm = PostTripForm()
     private var onFocusEmail: OnFocusChangeListener? = null
@@ -42,21 +39,32 @@ class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewMode
         extraPeople.remove(id)
     }
 
-    fun postTrip() = viewModelScope.launch {
-        tripsRepository.postTrip(
-            PostTrip(
-                startTime,
-                endTime,
-                description,
-                extraPeople,
-                startLat,
-                startLon,
-                endLat,
-                endLon,
-                startName,
-                destName
+    fun postTrip() {
+        var startTime: String? = liveStartDate.value
+        var endTime: String? = liveEndDate.value
+        val fromServer = SimpleDateFormat("EEE, d MMM yyyy hh:mm aaa")
+        val myFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        var date = fromServer.parse(startTime)
+        startTime = myFormat.format(date)
+        date = fromServer.parse(endTime)
+        endTime = myFormat.format(date)
+        Log.e("datee",endTime)
+        viewModelScope.launch {
+            tripsRepository.postTrip(
+                PostTrip(
+                    startTime,
+                    endTime,
+                    description,
+                    extraPeople,
+                    startLat,
+                    startLon,
+                    endLat,
+                    endLon,
+                    startName,
+                    destName
+                )
             )
-        )
+        }
     }
 
 
@@ -86,8 +94,9 @@ class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewMode
     }
 
     fun onButtonClick() {
-        Log.e("ptvm", "clicked")
-        post.onClick()
+//        Log.e("ptvm", "clicked")
+//        post.onClick()
+        postTrip()
     }
 
     fun getPostFields(): MutableLiveData<PostTripFormFields>? {
@@ -98,7 +107,7 @@ class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewMode
         return post
     }
 
-    companion object{
+    companion object {
         @JvmStatic
         @BindingAdapter("bindServerDate")
         fun bindServerDate(textView: TextView, date: String?) {
@@ -106,7 +115,6 @@ class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewMode
             textView.text = date
         }
     }
-
 
 //    companion object {
 //        @JvmStatic

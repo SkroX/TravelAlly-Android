@@ -13,38 +13,44 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class UtilsModule{
+class UtilsModule {
 
 
     @Provides
-    fun OkHttpClientProvider(networkConnectionInterceptor: NetworkConnectionInterceptor):OkHttpClient{
+    fun OkHttpClientProvider(networkConnectionInterceptor: NetworkConnectionInterceptor): OkHttpClient {
+        val logging = HttpLoggingInterceptor()
+// set your desired log level
+// set your desired log level
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         val okkHttpclient = OkHttpClient.Builder()
-                .addInterceptor(networkConnectionInterceptor)
-                .build()
+            .addInterceptor(networkConnectionInterceptor)
+            .addInterceptor(logging)
+            .build()
         return okkHttpclient
     }
 
     @Provides
-    fun MyApiProvider(okkHttpclient:OkHttpClient):MyApi{
+    fun MyApiProvider(okkHttpclient: OkHttpClient): MyApi {
         return Retrofit.Builder()
-                .client(okkHttpclient)
-                .baseUrl("http://192.168.1.10:8080/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(MyApi::class.java)
+            .client(okkHttpclient)
+            .baseUrl("http://192.168.1.8:8080/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(MyApi::class.java)
     }
 }
 
 @Module
-class LoginModule{
+class LoginModule {
 
     @Provides
-    fun GoogleSignInClientProvider(activity: Activity): GoogleSignInClient{
+    fun GoogleSignInClientProvider(activity: Activity): GoogleSignInClient {
         val gso =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -59,17 +65,20 @@ class LoginModule{
 }
 
 @Module
-class PlacesAPiModule{
+class PlacesAPiModule {
 
     @Singleton
     @Provides
-    fun PlacesClientProvider(context: Context):PlacesClient{
+    fun PlacesClientProvider(context: Context): PlacesClient {
         // Initialize the SDK
-        Places.initialize(context.applicationContext, context.getString(R.string.google_place_api_key));
+        Places.initialize(
+            context.applicationContext,
+            context.getString(R.string.google_place_api_key)
+        );
 
         // Create a new Places client instance
-        val placesClient: PlacesClient  = Places.createClient(context);
-        return  placesClient
+        val placesClient: PlacesClient = Places.createClient(context);
+        return placesClient
     }
 
 
@@ -78,4 +87,4 @@ class PlacesAPiModule{
 
 // This module tells AppComponent which are its subcomponents
 @Module(subcomponents = [LoginComponent::class, MainComponent::class])
-class AppSubcomponents{}
+class AppSubcomponents {}

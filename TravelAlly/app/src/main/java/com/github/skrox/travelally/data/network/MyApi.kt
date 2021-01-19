@@ -39,7 +39,8 @@ interface MyApi {
         @HeaderMap headers: Map<String, String?>
     ): Response<Trip>
 
-    @POST("trips/trips")
+//    @Headers("Accept: application/json")
+    @POST("trips/trips/")
     suspend fun postTrip(
         @HeaderMap headers: Map<String, String?>,
         @Body trip: PostTrip
