@@ -24,7 +24,12 @@ import com.github.skrox.travelally.data.network.responses.UserSuggestionResponse
 import com.github.skrox.travelally.data.repositories.UserRepository
 import com.github.skrox.travelally.databinding.PostTripFragmentBinding
 import com.github.skrox.travelally.ui.mainscreen.posttrip.temp.PostTripViewModelFacotry
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.linkedin.android.spyglass.mentions.MentionSpan
 import com.linkedin.android.spyglass.mentions.Mentionable
 import com.linkedin.android.spyglass.mentions.MentionsEditable
@@ -109,7 +114,7 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-//        setPlaceListeners()
+        setPlaceListeners()
 
     }
 
@@ -275,58 +280,63 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
             else
                 postTripViewModel.liveEndDate.postValue(date)
         }
+
+        val status = Autocomplete.getStatusFromIntent(data!!)
+        Log.e("gpi", status.toString())
     }
 
-    /* private fun setPlaceListeners() {
-     // Initialize the AutocompleteSupportFragment.
-     // Initialize the AutocompleteSupportFragment.
-     val autocompleteFragment: AutocompleteSupportFragment =
-         childFragmentManager.findFragmentById(R.id.start_place) as AutocompleteSupportFragment
+    private fun setPlaceListeners() {
+        // Initialize the AutocompleteSupportFragment.
+        // Initialize the AutocompleteSupportFragment.
+        val autocompleteFragment: AutocompleteSupportFragment =
+            childFragmentManager.findFragmentById(R.id.start_place) as AutocompleteSupportFragment
 
-     // Specify the types of place data to return.
+        // Specify the types of place data to return.
 
-     // Specify the types of place data to return.
-     autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
 
-     // Set up a PlaceSelectionListener to handle the response.
+        // Set up a PlaceSelectionListener to handle the response.
 
-     // Set up a PlaceSelectionListener to handle the response.
-     autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-         override fun onPlaceSelected(place: Place) {
-             // TODO: Get info about the selected place.
-             //                Log.i(TAG, "Place: " + place.name + ", " + place.id)
-         }
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                // TODO: Get info about the selected place.
+                //                Log.i(TAG, "Place: " + place.name + ", " + place.id)
+            }
 
-         override fun onError(status: Status) {
-             // TODO: Handle the error.
-             //                Log.i(TAG, "An error occurred: $status")
-         }
-     })
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+                //                Log.i(TAG, "An error occurred: $status")
 
-
-     val autocompleteFragmentend: AutocompleteSupportFragment =
-         childFragmentManager.findFragmentById(R.id.end_place) as AutocompleteSupportFragment
-
-     // Specify the types of place data to return.
-
-     // Specify the types of place data to return.
-     autocompleteFragmentend.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
-
-     // Set up a PlaceSelectionListener to handle the response.
-
-     // Set up a PlaceSelectionListener to handle the response.
-     autocompleteFragmentend.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-         override fun onPlaceSelected(place: Place) {
-             // TODO: Get info about the selected place.
-             //                Log.i(TAG, "Place: " + place.name + ", " + place.id)
-         }
-
-         override fun onError(status: Status) {
-             // TODO: Handle the error.
-             //                Log.i(TAG, "An error occurred: $status")
-         }
-     })
+                Log.e("places error", status.toString())
+            }
+        })
 
 
- }*/
+        val autocompleteFragmentend: AutocompleteSupportFragment =
+            childFragmentManager.findFragmentById(R.id.end_place) as AutocompleteSupportFragment
+
+        // Specify the types of place data to return.
+
+        // Specify the types of place data to return.
+        autocompleteFragmentend.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
+
+        // Set up a PlaceSelectionListener to handle the response.
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragmentend.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                // TODO: Get info about the selected place.
+                //                Log.i(TAG, "Place: " + place.name + ", " + place.id)
+            }
+
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+                //                Log.i(TAG, "An error occurred: $status")
+            }
+        })
+
+
+    }
 }
