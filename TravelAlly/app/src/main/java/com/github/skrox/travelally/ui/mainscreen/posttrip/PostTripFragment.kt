@@ -47,6 +47,8 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import kotlinx.android.synthetic.main.post_trip_fragment.*
 import kotlinx.coroutines.runBlocking
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -270,7 +272,7 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // check for the results
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_END || requestCode == REQUEST_CODE_START) {
             // get date from string
             val date = data?.getStringExtra("selectedDate")
             // set the value of the editText
@@ -279,10 +281,10 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
                 postTripViewModel.liveStartDate.postValue(date)
             else
                 postTripViewModel.liveEndDate.postValue(date)
+        } else {
+            val status = Autocomplete.getStatusFromIntent(data!!)
+            Log.e("gpi", status.toString())
         }
-
-        val status = Autocomplete.getStatusFromIntent(data!!)
-        Log.e("gpi", status.toString())
     }
 
     private fun setPlaceListeners() {
@@ -294,7 +296,13 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
         // Specify the types of place data to return.
 
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
+        autocompleteFragment.setPlaceFields(
+            Arrays.asList(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.LAT_LNG
+            )
+        )
 
         // Set up a PlaceSelectionListener to handle the response.
 
@@ -302,7 +310,16 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
                 // TODO: Get info about the selected place.
-                //                Log.i(TAG, "Place: " + place.name + ", " + place.id)
+                Log.e(
+                    "place selected",
+                    "Place name " + place.name + " Place latlng " + place.latLng
+                )
+                val df = DecimalFormat("#.######")
+                df.roundingMode = RoundingMode.HALF_DOWN
+
+                postTripViewModel.startLat = df.format(place.latLng!!.latitude).toDouble()
+                postTripViewModel.startLon = df.format(place.latLng!!.longitude).toDouble()
+                postTripViewModel.startName = place.name!!
             }
 
             override fun onError(status: Status) {
@@ -320,15 +337,24 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
         // Specify the types of place data to return.
 
         // Specify the types of place data to return.
-        autocompleteFragmentend.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
+        autocompleteFragmentend.setPlaceFields(
+            Arrays.asList(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.LAT_LNG
+            )
+        )
 
         // Set up a PlaceSelectionListener to handle the response.
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragmentend.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-                // TODO: Get info about the selected place.
-                //                Log.i(TAG, "Place: " + place.name + ", " + place.id)
+                val df = DecimalFormat("#.######")
+                df.roundingMode = RoundingMode.HALF_DOWN
+                postTripViewModel.endLat = df.format(place.latLng!!.latitude).toDouble()
+                postTripViewModel.endLon = df.format(place.latLng!!.longitude).toDouble()
+                postTripViewModel.destName = place.name!!
             }
 
             override fun onError(status: Status) {

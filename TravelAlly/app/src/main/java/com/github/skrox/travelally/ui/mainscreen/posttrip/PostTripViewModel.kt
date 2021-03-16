@@ -18,12 +18,12 @@ class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewMode
 
     var description: String = ""
     private var extraPeople: MutableList<Int> = mutableListOf()
-    private var startLat: Double = 0.0
-    private var startLon: Double = 0.0
-    private var endLat: Double = 0.0
-    private var endLon: Double = 0.0
-    private var startName: String = "sd"
-    private var destName: String = "gsv"
+    var startLat: Double = 0.0
+    var startLon: Double = 0.0
+    var endLat: Double = 0.0
+    var endLon: Double = 0.0
+    var startName: String = "sd"
+    var destName: String = "gsv"
     var liveStartDate: MutableLiveData<String> = MutableLiveData()
     var liveEndDate: MutableLiveData<String> = MutableLiveData()
 
@@ -48,7 +48,7 @@ class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewMode
         startTime = myFormat.format(date)
         date = fromServer.parse(endTime)
         endTime = myFormat.format(date)
-        Log.e("datee",endTime)
+        Log.e("datee", endTime)
         viewModelScope.launch {
             tripsRepository.postTrip(
                 PostTrip(
