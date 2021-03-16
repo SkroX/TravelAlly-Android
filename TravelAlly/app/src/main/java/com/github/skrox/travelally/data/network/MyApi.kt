@@ -1,6 +1,7 @@
 package com.github.skrox.travelally.data.network
 
 import com.github.skrox.travelally.data.db.entities.Trip
+import com.github.skrox.travelally.data.db.entities.Vote
 import com.github.skrox.travelally.data.network.postobjects.PostTrip
 import com.github.skrox.travelally.data.network.postobjects.SendToken
 import com.github.skrox.travelally.data.network.responses.AuthResponse
@@ -44,6 +45,12 @@ interface MyApi {
     suspend fun postTrip(
         @HeaderMap headers: Map<String, String?>,
         @Body trip: PostTrip
+    ): Response<Trip>
+
+    @POST("trips/vote/")
+    suspend fun voteTrip(
+        @HeaderMap headers: Map<String, String?>,
+        @Body vote: Vote
     ): Response<Trip>
 
     @POST("trips/trips/{id}/upload-image")

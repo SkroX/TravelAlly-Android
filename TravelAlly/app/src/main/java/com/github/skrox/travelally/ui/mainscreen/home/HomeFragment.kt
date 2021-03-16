@@ -118,7 +118,7 @@ class HomeFragment() : Fragment(), HomeListener{
     }
 
     private fun List<Trip>.toTripItem(): List<TripItem>{
-        return this.map { TripItem(it) }
+        return this.map { TripItem(it, homeViewModel) }
     }
 
     private fun initRecyclerView(){

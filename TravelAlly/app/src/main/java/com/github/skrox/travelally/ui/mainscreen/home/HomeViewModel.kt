@@ -3,6 +3,7 @@ package com.github.skrox.travelally.ui.mainscreen.home
 import android.content.Context
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -93,6 +94,13 @@ class HomeViewModel( private val userRepository: UserRepository,
                 homeListener?.onFailure(e.message ?: "Unknown cause")
                 e.printStackTrace()
             }
+        }
+    }
+
+    fun voteTrip(view: View, tripid: Int){
+        Log.e("upvote",  " " + tripid)
+        viewModelScope.launch {
+            tripsRepository.voteTrip(tripid, userRepository.getUserId()!!)
         }
     }
 }

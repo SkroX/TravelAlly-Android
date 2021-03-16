@@ -9,6 +9,8 @@ private const val KEY_TOKEN = "token"
 private const val KEY_LAT = "lat"
 private const val KEY_LON = "lon"
 private const val KEY_RADIUS = "radius"
+private const val KEY_USER_ID = "userId"
+
 
 @Singleton
 class PreferenceProvider @Inject constructor(
@@ -30,6 +32,17 @@ class PreferenceProvider @Inject constructor(
 
     fun getToken(): String? {
         return preference.getString(KEY_TOKEN, null)
+    }
+
+    fun saveId(id: String) {
+        preference.edit().putString(
+            KEY_USER_ID,
+            id
+        ).apply()
+    }
+
+    fun getId(): String? {
+        return preference.getString(KEY_USER_ID, "14")
     }
 
     fun saveLatLonRadius(lat: Double, lon:Double, radius:Double){

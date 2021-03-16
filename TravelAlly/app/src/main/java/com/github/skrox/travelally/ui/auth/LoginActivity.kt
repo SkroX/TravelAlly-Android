@@ -2,6 +2,7 @@ package com.github.skrox.travelally.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -96,6 +97,7 @@ class LoginActivity : AppCompatActivity(), ActivityNavigation, AuthListener{
 
     override fun onFailure(msg: String) {
         progress_circular.hide()
+        Log.e("auth error", msg)
         root_layout.snackbar(msg)
     }
 

@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.github.skrox.travelally.data.db.entities.Trip
 import com.github.skrox.travelally.data.network.MyApi
 import com.github.skrox.travelally.data.network.SafeApiRequest
 import com.github.skrox.travelally.data.network.postobjects.SendToken
@@ -17,47 +16,52 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserRepository @Inject constructor(private val api:MyApi,
+class UserRepository @Inject constructor(
+    private val api: MyApi,
 //                    private val db:AppDatabase,
-                    private val prefs: PreferenceProvider
+    private val prefs: PreferenceProvider
 ) : SafeApiRequest() {
-    private val authMap = mapOf<String,String?>("Authorization" to "Token "+prefs.getToken())
+    private val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
     private val user = MutableLiveData<GoogleSignInAccount?>()
 
-    suspend fun login(id_info:String?): AuthResponse{
-        return apiRequest {api.userLogin(
-            SendToken(
-                id_info
+    suspend fun login(id_info: String?): AuthResponse {
+        return apiRequest {
+            api.userLogin(
+                SendToken(
+                    id_info
+                )
             )
-        )}
+        }
     }
 
-    fun saveuser(authResponse: AuthResponse, account: GoogleSignInAccount?){
+    fun saveuser(authResponse: AuthResponse, account: GoogleSignInAccount?) {
 //        db.getUserDao().upsert(authResponse.user)
         prefs.saveToken(authResponse.token)
+        prefs.saveId(authResponse.user.id.toString())
         user.postValue(account)
     }
 
-    fun getUser(context: Context): LiveData<GoogleSignInAccount?>{
+    fun getUserId() = prefs.getId()
+    fun getUser(context: Context): LiveData<GoogleSignInAccount?> {
 
-        if(user.value!=GoogleSignIn.getLastSignedInAccount(context))
-        user.postValue(GoogleSignIn.getLastSignedInAccount(context))
+        if (user.value != GoogleSignIn.getLastSignedInAccount(context))
+            user.postValue(GoogleSignIn.getLastSignedInAccount(context))
         return user
     }
 
-    fun getToken()=prefs.getToken()
+    fun getToken() = prefs.getToken()
 
-    fun logout(){
+    fun logout() {
         user.postValue(null)
-        Log.e("logged out","success")
+        Log.e("logged out", "success")
     }
 
-    suspend fun getUsersSuggestion(query: String): List<UserSuggestionResponse>{
+    suspend fun getUsersSuggestion(query: String): List<UserSuggestionResponse> {
         //TODO:check if fetch needed by db
 
-        val  queryMap = mapOf<String,String>("q" to query )
+        val queryMap = mapOf<String, String>("q" to query)
 
-        val response=apiRequest { api.getUserSuggestions(authMap, queryMap) }
+        val response = apiRequest { api.getUserSuggestions(authMap, queryMap) }
         return response
     }
 }

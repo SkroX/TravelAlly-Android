@@ -8,12 +8,13 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.databinding.BindableItem
 import com.xwray.groupie.databinding.ViewHolder
 
-class TripItem(public val trip: Trip) :BindableItem<ItemTripBinding>(){
+class TripItem( val trip: Trip, val homeViewModel: HomeViewModel) :BindableItem<ItemTripBinding>(){
 
     override fun getLayout() = R.layout.item_trip
 
     override fun bind(viewBinding: ItemTripBinding, position: Int) {
         viewBinding.trip=trip
+        viewBinding.vm = homeViewModel
         viewBinding.executePendingBindings()
     }
 

@@ -22,10 +22,10 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="@{trip::onClick}"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        android:onClick="@{trip::onClick}">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -57,17 +57,19 @@
                 android:text="@{trip.start_name + ` - ` + trip.dest_name}"/>
 
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/sorucetodest"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="8dp"
                 android:padding="8dp"
                 android:tint="@color/colorPrimaryDark"
                 app:srcCompat="@android:drawable/arrow_up_float"
-                android:layout_below="@+id/sorucetodest"
-                android:layout_marginBottom="8dp"/>
+                android:onClick="@{(view)->vm.voteTrip(view, trip.id)}"
+                />
 
             <TextView
                 android:id="@+id/votes"

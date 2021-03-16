@@ -2,6 +2,7 @@ package com.github.skrox.travelally.data.repositories
 
 import android.util.Log
 import com.github.skrox.travelally.data.db.entities.Trip
+import com.github.skrox.travelally.data.db.entities.Vote
 import com.github.skrox.travelally.data.network.MyApi
 import com.github.skrox.travelally.data.network.SafeApiRequest
 import com.github.skrox.travelally.data.network.postobjects.PostTrip
@@ -47,5 +48,9 @@ class TripsRepository @Inject constructor(private val api: MyApi,
 
     suspend fun postTrip(trip: PostTrip): Trip{
         return apiRequest { api.postTrip(authMap,trip) }
+    }
+
+    suspend fun voteTrip(tripId: Int, userId: String): Trip{
+        return apiRequest { api.voteTrip(authMap, Vote(tripId,userId)) }
     }
 }
