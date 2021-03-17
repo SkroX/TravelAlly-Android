@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,13 +9,90 @@
             type="com.github.skrox.travelally.ui.mainscreen.userprofile.UserProfileViewModel" />
     </data>
 
-    <FrameLayout
+    <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
+
+        <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Hello" />
+            app:layout_anchor="@+id/scrollView2"
+            app:layout_anchorGravity="center">
 
-    </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/user_image"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="16dp"
+                        app:civ_border_width="1dp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/user_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/user_image"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="16dp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/user_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/user_email"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="16dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/user_trips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_name"
+                        android:layout_alignParentLeft="true"
+                        android:layout_margin="16dp"
+                        android:text="My Trips" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/user_trip_requests"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_name"
+                        android:layout_alignParentEnd="true"
+                        android:layout_margin="16dp"
+                        android:layout_toEndOf="@+id/user_trips"
+                        android:text="Trip Requests" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/set_radius"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/user_trips"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="16dp"
+                        android:text="Set Radius" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/logout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/set_radius"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="16dp"
+                        android:text="Logout"
+                        android:onClick="@{vm::logout}"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout>
 </layout>
