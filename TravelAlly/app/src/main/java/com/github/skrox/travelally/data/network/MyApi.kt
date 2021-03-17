@@ -40,6 +40,12 @@ interface MyApi {
         @HeaderMap headers: Map<String, String?>
     ): Response<Trip>
 
+    @POST("trips/request/{id}/")
+    suspend fun requestToJoin(
+        @Path("id") id: Int,
+        @HeaderMap headers: Map<String, String?>
+    ): Response<Unit>
+
 //    @Headers("Accept: application/json")
     @POST("trips/trips/")
     suspend fun postTrip(

@@ -166,7 +166,8 @@
             android:layout_margin="8dp"
             android:padding="8dp"
             android:text="Request To Join"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:onClick="@{trip::requestToJoin}"/>
 
 
     </com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout>

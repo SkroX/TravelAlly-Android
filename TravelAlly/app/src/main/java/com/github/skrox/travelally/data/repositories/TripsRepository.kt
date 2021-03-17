@@ -53,4 +53,8 @@ class TripsRepository @Inject constructor(private val api: MyApi,
     suspend fun voteTrip(tripId: Int, userId: String): Trip{
         return apiRequest { api.voteTrip(authMap, Vote(tripId,userId)) }
     }
+
+    suspend fun requestToJoin(tripId: Int){
+        return apiRequest { api.requestToJoin(tripId, authMap) }
+    }
 }
