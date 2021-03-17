@@ -1,19 +1,20 @@
-package com.github.skrox.travelally.ui.mainscreen.posttrip.temp
+package com.github.skrox.travelally.ui.mainscreen.userprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.github.skrox.travelally.data.repositories.TripsRepository
+import com.github.skrox.travelally.data.repositories.UserRepository
 import com.github.skrox.travelally.di.ActivityScope
-import com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripViewModel
 import javax.inject.Inject
-import javax.inject.Singleton
+
 @ActivityScope
 @Suppress("UNCHECKED_CAST")
-class PostTripViewModelFacotry @Inject constructor(
-    private val tripsRepository: TripsRepository
+class UserProfileVMFactory @Inject constructor(
+    private val tripsRepository: TripsRepository,
+    private val userRepository: UserRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return PostTripViewModel(tripsRepository) as T
+        return UserProfileViewModel(tripsRepository, userRepository) as T
     }
 }

@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import java.text.SimpleDateFormat
 import java.util.*
 
 fun ProgressBar.show(){
@@ -24,15 +23,20 @@ fun View.snackbar(message: String){
         snackbar.setAction("Ok") {
             snackbar.dismiss()
         }
+        val snackbarView: View = snackbar.getView()
+        val textView =
+            snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+        textView.maxLines = 5
     }.show()
+
 }
 
 @BindingAdapter("image")
 fun ImageView.loadImage(url: String?){
     if(!url.isNullOrEmpty()){
-       Picasso.get().load(url).resize(0,120).centerCrop()
+       Picasso.get().load(url).resize(0, 120).centerCrop()
             .into(this)
-        Log.e("utilimage",url)
+        Log.e("utilimage", url)
     }else{
         Picasso.get().cancelRequest(this)
     }

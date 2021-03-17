@@ -23,6 +23,7 @@ import com.github.skrox.travelally.data.db.entities.UserMentionable
 import com.github.skrox.travelally.data.network.responses.UserSuggestionResponse
 import com.github.skrox.travelally.data.repositories.UserRepository
 import com.github.skrox.travelally.databinding.PostTripFragmentBinding
+import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.ui.mainscreen.posttrip.temp.PostTripViewModelFacotry
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
@@ -110,7 +111,7 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity?.application as TravelAllyApplication).appComponent.inject(this)
+        (activity as MainActivity).mainComponent.inject(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

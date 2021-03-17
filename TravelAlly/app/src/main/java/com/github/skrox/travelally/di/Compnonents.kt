@@ -8,6 +8,7 @@ import com.github.skrox.travelally.ui.mainscreen.home.HomeFragment
 import com.github.skrox.travelally.ui.mainscreen.posttrip.DatePickerFragment
 import com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripFragment
 import com.github.skrox.travelally.ui.mainscreen.tripdetail.TripDetailFragment
+import com.github.skrox.travelally.ui.mainscreen.userprofile.UserProfileFragment
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Subcomponent
@@ -28,9 +29,6 @@ interface AppComponent {
     fun LoginComponent(): LoginComponent.Factory
 
     fun MainComponent(): MainComponent.Factory
-
-    fun inject(frament:PostTripFragment)
-    fun inject(frament:DatePickerFragment)
 
 }
 
@@ -59,6 +57,8 @@ interface MainComponent{
     fun inject(fragment: HomeFragment)
     fun inject(activity: MainActivity)
     fun inject(fragment: TripDetailFragment)
+    fun inject(fragment: UserProfileFragment)
+    fun inject(fragment:PostTripFragment)
 
 }
 
