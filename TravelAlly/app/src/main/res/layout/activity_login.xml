@@ -7,39 +7,134 @@
 
         <variable
             name="viewmodel"
-            type="com.github.skrox.travelally.ui.auth.AuthViewModel"
-            />
+            type="com.github.skrox.travelally.ui.auth.AuthViewModel" />
 
     </data>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:id="@+id/root_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.auth.LoginActivity">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/sign_in_button"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            tools:context=".ui.auth.LoginActivity">
+
+            <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+                android:id="@+id/loginCard"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:translationY="-112dp"
+                app:cardCornerRadius="32dp"
+                tools:layout_editor_absoluteY="32dp">
+
+                <ImageView
+                    android:id="@+id/imageBG"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:translationY="112dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/imageTransparent"
+                    android:translationY="112dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="WELCOME"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    android:translationY="96dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="32dp"
+                    android:text="Get ready to explore the world!"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="12sp"
+                    android:translationY="96dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="48dp"
+                    android:text="Login to start your journey"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="#B3FFFFFF"
+                    android:textSize="12sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginTop="48dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+            </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/loginCard">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@color/imageTransparent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sign_in_button"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="32dp"
+                    android:onClick="@{viewmodel::googleLogin}"
+                    android:text="Sign in with Google"
+                    android:textColor="@color/white"
+                    app:icon="@drawable/ic_baseline_arrow_forward_24"
+                    app:iconGravity="textEnd"
+                    app:iconTint="@android:color/transparent"
+                    app:iconTintMode="add" />
+
+                <View
+                    android:layout_width="150dp"
+                    android:layout_height="3dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:color/white" />
+            </FrameLayout>
+
+
+            <!--                app:icon="@drawable/ic_google_icon"-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_circular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{viewmodel::googleLogin}"
-            android:text="Sign In"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ProgressBar
-        android:id="@+id/progress_circular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
