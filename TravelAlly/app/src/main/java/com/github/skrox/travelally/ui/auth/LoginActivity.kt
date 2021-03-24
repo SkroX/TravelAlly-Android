@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity(), ActivityNavigation, AuthListener{
 
         //Remove title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getSupportActionBar()!!.hide();
+//        this.getSupportActionBar()!!.hide();
 
 //Remove notification bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

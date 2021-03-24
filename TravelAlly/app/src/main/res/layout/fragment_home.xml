@@ -5,14 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.github.skrox.travelally.ui.mainscreen.home.HomeViewModel" />
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -20,7 +23,9 @@
             tools:context=".ui.mainscreen.home.HomeFragment">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:paddingTop="@dimen/profile_card_height"
                 android:id="@+id/recyclerView"
+                android:clipToPadding="false"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"

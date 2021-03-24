@@ -6,41 +6,38 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.skrox.travelally.R
 import com.github.skrox.travelally.data.db.entities.Trip
 import com.github.skrox.travelally.databinding.FragmentHomeBinding
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
-import com.github.skrox.travelally.util.snackbar
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 
-class HomeFragment() : Fragment(), HomeListener{
+class HomeFragment() : Fragment(), HomeListener {
 
-    @Inject lateinit var mGoogleSignInClient: GoogleSignInClient
-    @Inject lateinit var factory:HomeViewModelFacotry
+    @Inject
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+    @Inject
+    lateinit var factory: HomeViewModelFacotry
 
-    private lateinit var mAdapter:GroupAdapter<ViewHolder>
+    private lateinit var mAdapter: GroupAdapter<ViewHolder>
 
-    private val homeViewModel:HomeViewModel by viewModels{factory}
+    private val homeViewModel: HomeViewModel by viewModels { factory }
 
-    private lateinit var navController:NavController
-
+    private lateinit var navController: NavController
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -49,12 +46,13 @@ class HomeFragment() : Fragment(), HomeListener{
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
-        Log.e("created","fragment")
+        Log.e("created", "fragment")
+
 //        val gso =
 //            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //                .requestEmail()
@@ -68,9 +66,14 @@ class HomeFragment() : Fragment(), HomeListener{
             DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.viewmodel = homeViewModel
         binding.lifecycleOwner = this
-        homeViewModel.homeListener=this
+        homeViewModel.homeListener = this
 
-        navController= this.findNavController()
+
+        // set up the RecyclerView
+
+        // set up the RecyclerView
+
+        navController = this.findNavController()
         return binding.root
     }
 
@@ -80,13 +83,13 @@ class HomeFragment() : Fragment(), HomeListener{
         bindUI()
     }
 
-    override fun onFailure(message:String) {
+    override fun onFailure(message: String) {
 //        root_layout.snackbar(message)
     }
 
-    private fun bindUI(){
+    private fun bindUI() {
 
-
+//
         homeViewModel.loadPopularTrips()
         homeViewModel.loadTripsNearMe()
         homeViewModel.loadAllTrips()
@@ -98,8 +101,8 @@ class HomeFragment() : Fragment(), HomeListener{
 //        }
 
         homeViewModel._popularTrips.observe(viewLifecycleOwner, Observer {
-            if (it.isNotEmpty()){
-                Log.e("populartrip",it.size.toString())
+            if (it.isNotEmpty()) {
+                Log.e("populartrip", it.size.toString())
                 addSection(it.toTripItem(), "Popular Trips")
             }
         })
@@ -117,7 +120,7 @@ class HomeFragment() : Fragment(), HomeListener{
         })
     }
 
-    private fun List<Trip>.toTripItem(): List<TripItem>{
+    private fun List<Trip>.toTripItem(): List<TripItem> {
         return this.map { TripItem(it, homeViewModel) }
     }
 
@@ -128,7 +131,7 @@ class HomeFragment() : Fragment(), HomeListener{
             spanCount=2
         }
         recyclerView.apply {
-            layoutManager=GridLayoutManager(this@HomeFragment.context, mAdapter.spanCount).apply {
+            layoutManager= GridLayoutManager(this@HomeFragment.context, mAdapter.spanCount).apply {
                 spanSizeLookup=mAdapter.spanSizeLookup
             }
             setHasFixedSize(true)
@@ -137,10 +140,10 @@ class HomeFragment() : Fragment(), HomeListener{
         }
     }
 
-    private fun addSection(tripItem: List<TripItem>, name: String){
+    private fun addSection(tripItem: List<TripItem>, name: String) {
 
         val excitingSection = Section()
-        Log.e(name,tripItem.size.toString())
+        Log.e(name, tripItem.size.toString())
         ExpandableGroup(ExpandableHeaderItem(name), true).apply {
             excitingSection.addAll(tripItem)
             add(excitingSection)
