@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -14,26 +12,13 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.mainscreen.home.HomeFragment">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:paddingTop="@dimen/profile_card_height"
-                android:id="@+id/recyclerView"
-                android:clipToPadding="false"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/profile_card_height" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

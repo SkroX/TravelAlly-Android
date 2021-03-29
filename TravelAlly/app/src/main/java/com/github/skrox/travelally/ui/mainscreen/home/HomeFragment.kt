@@ -12,32 +12,36 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import com.github.skrox.travelally.R
-import com.github.skrox.travelally.data.db.entities.Trip
+import com.github.skrox.travelally.data.db.entities.ParentModel
 import com.github.skrox.travelally.databinding.FragmentHomeBinding
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
+import com.github.skrox.travelally.ui.mainscreen.home.adapters.ParentAdapter
+import com.github.skrox.travelally.util.Constants.ORDER_NEARME_ITEMS
+import com.github.skrox.travelally.util.Constants.ORDER_POPULAR_ITEMS
+import com.github.skrox.travelally.util.Constants.VIEW_TYPE_NEARME_ITEMS
+import com.github.skrox.travelally.util.Constants.VIEW_TYPE_POPULAR_ITEMS
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.xwray.groupie.ExpandableGroup
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
-import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 
-class HomeFragment() : Fragment(), HomeListener {
+class HomeFragment : Fragment(), HomeListener {
 
     @Inject
     lateinit var mGoogleSignInClient: GoogleSignInClient
+
     @Inject
     lateinit var factory: HomeViewModelFacotry
-
-    private lateinit var mAdapter: GroupAdapter<ViewHolder>
 
     private val homeViewModel: HomeViewModel by viewModels { factory }
 
     private lateinit var navController: NavController
+
+    private val mItemOrderList = mutableListOf<Int>()
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -49,29 +53,13 @@ class HomeFragment() : Fragment(), HomeListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        Log.e("created", "fragment")
-
-//        val gso =
-//            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestEmail()
-//                .requestIdToken(resources.getString(R.string.google_client_id))
-//                .build()
-//        val mGoogleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(activity as MainActivity, gso);
-
-        Log.e("facthome", factory.toString())
+    ): View {
 
         val binding: FragmentHomeBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.viewmodel = homeViewModel
         binding.lifecycleOwner = this
         homeViewModel.homeListener = this
-
-
-        // set up the RecyclerView
-
-        // set up the RecyclerView
 
         navController = this.findNavController()
         return binding.root
@@ -88,67 +76,59 @@ class HomeFragment() : Fragment(), HomeListener {
     }
 
     private fun bindUI() {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.home_rv)
+        val glm = StaggeredGridLayoutManager(2, VERTICAL)
 
-//
+        recyclerView?.layoutManager = glm
+        val parents: MutableList<ParentModel> = mutableListOf()
+        val parentAdapter = ParentAdapter()
+        recyclerView?.apply {
+            adapter = parentAdapter
+        }
+
+        parentAdapter.submitList(parents)
+        recyclerView?.setHasFixedSize(true)
+//        val helper: SnapHelper = LinearSnapHelper()
+//        helper.attachToRecyclerView(recyclerView)
+
+
         homeViewModel.loadPopularTrips()
         homeViewModel.loadTripsNearMe()
         homeViewModel.loadAllTrips()
-        initRecyclerView()
-//        context?.let {
-//            homeVM.getuser(it).observe(viewLifecycleOwner, Observer {
-////                text_home.text=it?.idToken
-//            })
-//        }
 
         homeViewModel._popularTrips.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 Log.e("populartrip", it.size.toString())
-                addSection(it.toTripItem(), "Popular Trips")
+
+                val pos = findIndexToInsert(ORDER_POPULAR_ITEMS)
+                mItemOrderList.add(pos, ORDER_POPULAR_ITEMS)
+                parents.add(pos, ParentModel(VIEW_TYPE_POPULAR_ITEMS, "", it))
+                parentAdapter.submitList(parents)
+                parentAdapter.notifyDataSetChanged()
             }
         })
 
         homeViewModel._tripsNearMe.observe(viewLifecycleOwner, Observer {
 
             Log.e("nearmetrip", it.size.toString())
-            addSection(it.toTripItem(), "Near Me")
-
+            val pos = findIndexToInsert(ORDER_NEARME_ITEMS)
+            mItemOrderList.add(pos, ORDER_NEARME_ITEMS)
+            for (trip in it)
+                parents.add(pos, ParentModel(VIEW_TYPE_NEARME_ITEMS, "", mutableListOf(trip)))
+            parentAdapter.submitList(parents)
+            parentAdapter.notifyDataSetChanged()
         })
 
         homeViewModel._allTrips.observe(viewLifecycleOwner, Observer {
             Log.e("all trips", it.size.toString())
-            addSection(it.toTripItem(), "All Trips")
         })
     }
 
-    private fun List<Trip>.toTripItem(): List<TripItem> {
-        return this.map { TripItem(it, homeViewModel) }
-    }
-
-    private fun initRecyclerView(){
-
-        mAdapter = GroupAdapter<ViewHolder>().apply {
-//            addAll(tripItem)
-            spanCount=2
+    private fun findIndexToInsert(order: Int): Int {
+        if (order == 0) return 0
+        for ((idx, i) in mItemOrderList.withIndex()) {
+            if (i >= order) return idx
         }
-        recyclerView.apply {
-            layoutManager= GridLayoutManager(this@HomeFragment.context, mAdapter.spanCount).apply {
-                spanSizeLookup=mAdapter.spanSizeLookup
-            }
-            setHasFixedSize(true)
-            adapter=mAdapter
-
-        }
+        return mItemOrderList.size
     }
-
-    private fun addSection(tripItem: List<TripItem>, name: String) {
-
-        val excitingSection = Section()
-        Log.e(name, tripItem.size.toString())
-        ExpandableGroup(ExpandableHeaderItem(name), true).apply {
-            excitingSection.addAll(tripItem)
-            add(excitingSection)
-            mAdapter.add(this)
-        }
-    }
-
 }
