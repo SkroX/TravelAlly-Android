@@ -20,9 +20,17 @@ import com.github.skrox.travelally.data.db.entities.ParentModel
 import com.github.skrox.travelally.databinding.FragmentHomeBinding
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.ui.mainscreen.home.adapters.ParentAdapter
+import com.github.skrox.travelally.util.Constants.ORDER_ALLTRIPS_HEADING
+import com.github.skrox.travelally.util.Constants.ORDER_ALLTRIPS_ITEMS
+import com.github.skrox.travelally.util.Constants.ORDER_NEARME_HEADING
 import com.github.skrox.travelally.util.Constants.ORDER_NEARME_ITEMS
+import com.github.skrox.travelally.util.Constants.ORDER_POPULAR_HEADING
 import com.github.skrox.travelally.util.Constants.ORDER_POPULAR_ITEMS
+import com.github.skrox.travelally.util.Constants.VIEW_TYPE_ALLTRIPS_HEADING
+import com.github.skrox.travelally.util.Constants.VIEW_TYPE_ALLTRIPS_ITEMS
+import com.github.skrox.travelally.util.Constants.VIEW_TYPE_NEARME_HEADING
 import com.github.skrox.travelally.util.Constants.VIEW_TYPE_NEARME_ITEMS
+import com.github.skrox.travelally.util.Constants.VIEW_TYPE_POPULAR_HEADING
 import com.github.skrox.travelally.util.Constants.VIEW_TYPE_POPULAR_ITEMS
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import javax.inject.Inject
@@ -41,6 +49,8 @@ class HomeFragment : Fragment(), HomeListener {
     private lateinit var navController: NavController
 
     private val mItemOrderList = mutableListOf<Int>()
+    private val parents: MutableList<ParentModel> = mutableListOf()
+    private val parentAdapter = ParentAdapter()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -65,10 +75,16 @@ class HomeFragment : Fragment(), HomeListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        parents.clear()
+        mItemOrderList.clear()
+        bindUI()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 //        navController.navigate(R.id.action_nav_home_to_postTripFragment)
-        bindUI()
     }
 
     override fun onFailure(message: String) {
@@ -76,51 +92,36 @@ class HomeFragment : Fragment(), HomeListener {
     }
 
     private fun bindUI() {
-        val recyclerView = view?.findViewById<RecyclerView>(R.id.home_rv)
-        val glm = StaggeredGridLayoutManager(2, VERTICAL)
-
-        recyclerView?.layoutManager = glm
-        val parents: MutableList<ParentModel> = mutableListOf()
-        val parentAdapter = ParentAdapter()
-        recyclerView?.apply {
-            adapter = parentAdapter
-        }
-
-        parentAdapter.submitList(parents)
-        recyclerView?.setHasFixedSize(true)
-//        val helper: SnapHelper = LinearSnapHelper()
-//        helper.attachToRecyclerView(recyclerView)
-
 
         homeViewModel.loadPopularTrips()
         homeViewModel.loadTripsNearMe()
         homeViewModel.loadAllTrips()
 
+        initRecyclerView()
+
         homeViewModel._popularTrips.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 Log.e("populartrip", it.size.toString())
-
-                val pos = findIndexToInsert(ORDER_POPULAR_ITEMS)
-                mItemOrderList.add(pos, ORDER_POPULAR_ITEMS)
-                parents.add(pos, ParentModel(VIEW_TYPE_POPULAR_ITEMS, "", it))
-                parentAdapter.submitList(parents)
-                parentAdapter.notifyDataSetChanged()
+                addToParentList(ParentModel(VIEW_TYPE_POPULAR_ITEMS, "", it), ORDER_POPULAR_ITEMS)
             }
         })
 
         homeViewModel._tripsNearMe.observe(viewLifecycleOwner, Observer {
-
             Log.e("nearmetrip", it.size.toString())
-            val pos = findIndexToInsert(ORDER_NEARME_ITEMS)
-            mItemOrderList.add(pos, ORDER_NEARME_ITEMS)
             for (trip in it)
-                parents.add(pos, ParentModel(VIEW_TYPE_NEARME_ITEMS, "", mutableListOf(trip)))
-            parentAdapter.submitList(parents)
-            parentAdapter.notifyDataSetChanged()
+                addToParentList(
+                    ParentModel(VIEW_TYPE_NEARME_ITEMS, "", mutableListOf(trip)),
+                    ORDER_NEARME_ITEMS
+                )
         })
 
         homeViewModel._allTrips.observe(viewLifecycleOwner, Observer {
             Log.e("all trips", it.size.toString())
+            for (trip in it)
+                addToParentList(
+                    ParentModel(VIEW_TYPE_ALLTRIPS_ITEMS, "", mutableListOf(trip)),
+                    ORDER_ALLTRIPS_ITEMS
+                )
         })
     }
 
@@ -131,4 +132,39 @@ class HomeFragment : Fragment(), HomeListener {
         }
         return mItemOrderList.size
     }
+
+    private fun initRecyclerView() {
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.home_rv)
+        val glm = StaggeredGridLayoutManager(2, VERTICAL)
+        recyclerView?.layoutManager = glm
+        recyclerView?.apply {
+            adapter = parentAdapter
+            setHasFixedSize(true)
+        }
+
+//        val helper: SnapHelper = LinearSnapHelper()
+//        helper.attachToRecyclerView(recyclerView)
+
+        addToParentList(
+            ParentModel(VIEW_TYPE_POPULAR_HEADING, "Popular Trips", mutableListOf()),
+            ORDER_POPULAR_HEADING
+        )
+        addToParentList(
+            ParentModel(VIEW_TYPE_NEARME_HEADING, "Near You Trips", mutableListOf()),
+            ORDER_NEARME_HEADING
+        )
+        addToParentList(
+            ParentModel(VIEW_TYPE_ALLTRIPS_HEADING, "All Trips", mutableListOf()),
+            ORDER_ALLTRIPS_HEADING
+        )
+    }
+
+    private fun addToParentList(par: ParentModel, order: Int) {
+        val pos = findIndexToInsert(order)
+        mItemOrderList.add(pos, order)
+        parents.add(pos, par)
+        parentAdapter.submitList(parents)
+        parentAdapter.notifyDataSetChanged()
+    }
+
 }

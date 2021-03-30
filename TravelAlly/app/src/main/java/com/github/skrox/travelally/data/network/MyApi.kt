@@ -31,10 +31,10 @@ interface MyApi {
         @QueryMap query: Map<String, Double>
     ): Response<TripsResponse>
 
-    @GET("trips/trips")
+    @GET("trips/trips/")
     suspend fun getAllTrips(@HeaderMap headers: Map<String, String?>): Response<List<Trip>>
 
-    @GET("trips/trips/{id}")
+    @GET("trips/trips/{id}/")
     suspend fun getTrip(
         @Path("id") id: Int,
         @HeaderMap headers: Map<String, String?>
@@ -59,7 +59,7 @@ interface MyApi {
         @Body vote: Vote
     ): Response<Trip>
 
-    @POST("trips/trips/{id}/upload-image")
+    @POST("trips/trips/{id}/upload-image/")
     suspend fun postTripImage(
         @Path("id") id: Int,
         @HeaderMap headers: Map<String, String?>,
