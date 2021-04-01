@@ -16,14 +16,14 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:clipToPadding="false"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:onClick="@{trip::onClick}"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="16dp"
         app:cardElevation="16dp"
         app:cardUseCompatPadding="true">
 
@@ -41,8 +41,8 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
                     android:adjustViewBounds="true"
                     android:cropToPadding="true"
                     android:scaleType="centerCrop"
@@ -106,7 +106,6 @@
                 android:src="@drawable/ic_baseline_nature_24"
                 app:layout_constraintBottom_toBottomOf="@+id/textView2"
                 app:layout_constraintEnd_toStartOf="@+id/textView2"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView2" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -117,11 +116,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:drawablePadding="8dp"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:endDate="@{trip.end_time}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/drawable1"
                 app:layout_constraintTop_toBottomOf="@+id/image_frame"
                 app:startDate="@{trip.start_time}" />
@@ -134,14 +133,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:drawablePadding="8dp"
                 android:text="@{trip.extra_people.size()+1 + ` People`}"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/drawable2"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_frame" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

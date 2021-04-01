@@ -13,7 +13,7 @@ data class Trip(
     val start_lat: Double, val start_lon: Double,
     val end_lat: Double, val end_lon: Double,
     val start_name: String?, val dest_name: String?,
-    val voters: List<Int>, val organizer: Int, val image: String?
+    val voters: List<Int>, val organizer: Int, var image: String?
 ) {
     fun onClick(view: View) {
         Log.e("clickedtrip", this.start_time)

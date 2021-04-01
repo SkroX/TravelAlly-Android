@@ -15,16 +15,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.skrox.travelally.R
-import com.github.skrox.travelally.TravelAllyApplication
 import com.github.skrox.travelally.data.db.entities.UserMentionable
 import com.github.skrox.travelally.data.network.responses.UserSuggestionResponse
 import com.github.skrox.travelally.data.repositories.UserRepository
 import com.github.skrox.travelally.databinding.PostTripFragmentBinding
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.ui.mainscreen.posttrip.temp.PostTripViewModelFacotry
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
@@ -47,7 +48,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 import kotlinx.android.synthetic.main.post_trip_fragment.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*
@@ -131,8 +132,14 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
         })
     }
 
-
+    private var apiJob: Job? = null
     override fun onQueryReceived(@NonNull token: QueryToken): MutableList<String> {
+        try {
+            apiJob?.cancel()
+        } catch (e: CancellationException) {
+            e.printStackTrace()
+        }
+
         val text: MentionsEditable = (editor as MentionsEditText).getMentionsText()
         val mentionSpans: List<MentionSpan> = text.getMentionSpans()
         for (span in mentionSpans) {
@@ -142,27 +149,43 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
 //            text.replace(start, end, "[" + currentText + ", id:" + span.getId() + "]")
             Log.e("mentioned", currentText);
         }
-        val suggestionList: List<UserSuggestionResponse> = getSuggestions(token)
-        val suggestions: MutableList<UserMentionable> = ArrayList()
-        for (suggestion in suggestionList) {
-            suggestions.add(
-                UserMentionable(
-                    suggestion.id,
-                    suggestion.name,
-                    suggestion.family_name,
-                    suggestion.picture
-                )
-            )
+        try {
+            apiJob = lifecycleScope.launch {
+                var suggestionList: List<UserSuggestionResponse> = mutableListOf()
+                try {
+                    suggestionList = getSuggestions(token)
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                val suggestions: MutableList<UserMentionable> = ArrayList()
+                for (suggestion in suggestionList) {
+                    suggestions.add(
+                        UserMentionable(
+                            suggestion.id,
+                            suggestion.name,
+                            suggestion.family_name,
+                            suggestion.picture
+                        )
+                    )
+                }
+                val result = SuggestionsResult(token, suggestions)
+                onReceiveSuggestionsResult(result, BUCKET)
+                withContext(Dispatchers.Main) {
+                    return@withContext mutableListOf(BUCKET)
+                }
+            }
+        } catch (e: ApiException) {
+            e.printStackTrace()
         }
-        val result = SuggestionsResult(token, suggestions)
-        onReceiveSuggestionsResult(result, BUCKET)
+
         return mutableListOf(BUCKET)
     }
 
-    private fun getSuggestions(@NonNull token: QueryToken): List<UserSuggestionResponse> =
-        runBlocking {
-            return@runBlocking userRepository.getUsersSuggestion(token.keywords)
-        }
+    private suspend fun getSuggestions(@NonNull token: QueryToken): List<UserSuggestionResponse> =
+        userRepository.getUsersSuggestion(token.keywords)
+
 
     // --------------------------------------------------
     // SuggestionsResultListener Implementation
