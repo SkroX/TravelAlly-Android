@@ -1,10 +1,13 @@
 package com.github.skrox.travelally.ui.mainscreen.userprofile
 
+import android.content.Context
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.skrox.travelally.data.repositories.TripsRepository
 import com.github.skrox.travelally.data.repositories.UserRepository
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.OnCompleteListener
 
@@ -14,13 +17,16 @@ class UserProfileViewModel(
     private val mGoogleSignInClient: GoogleSignInClient
 ) : ViewModel() {
     var userProfileListener: UserProfileListener? = null
-
-    fun logout(view: View){
+    val user: MutableLiveData<GoogleSignInAccount> = MutableLiveData()
+    fun logout(view: View) {
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(view.context as MainActivity, OnCompleteListener<Void?> {
                 // ...
                 userRepository.logout()
             })
     }
+
+    fun getUser(context: Context) = userRepository.getUser(context)
+
 
 }

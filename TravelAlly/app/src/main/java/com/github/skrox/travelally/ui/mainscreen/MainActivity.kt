@@ -1,6 +1,5 @@
 package com.github.skrox.travelally.ui.mainscreen
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -19,19 +18,20 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.github.skrox.travelally.R
 import com.github.skrox.travelally.TravelAllyApplication
-import com.github.skrox.travelally.databinding.ActivityLoginBinding
 import com.github.skrox.travelally.databinding.ActivityMainBinding
 import com.github.skrox.travelally.di.MainComponent
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import de.hdodenhof.circleimageview.CircleImageView
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+
     @Inject
-     lateinit var factory: MainViewModelFactory
+    lateinit var factory: MainViewModelFactory
 
     lateinit var navController: NavController
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var mainComponent: MainComponent
 
-    private val viewModel: MainViewModel by viewModels{ factory }
+    private val viewModel: MainViewModel by viewModels { factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -53,7 +53,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
 
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        val binding: ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
         val profile_card = findViewById<CardView>(R.id.profile_card)
@@ -72,6 +73,12 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_nav_home_to_postTripFragment)
         }
 
+        val userProfile = findViewById<CircleImageView>(R.id.profile_image)
+        userProfile.setOnClickListener {
+            navController.navigateUp()
+            navController.navigate(R.id.userProfileFragment)
+        }
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -84,9 +91,9 @@ class MainActivity : AppCompatActivity() {
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        viewModel.getuser(this).observe(this, Observer { user->
-            if (user!=null){
-                Log.e("main activity",user.displayName)
+        viewModel.getuser(this).observe(this, Observer { user ->
+            if (user != null) {
+                Log.e("main activity", user.displayName)
                 viewModel.user.postValue(user)
             }
         })
