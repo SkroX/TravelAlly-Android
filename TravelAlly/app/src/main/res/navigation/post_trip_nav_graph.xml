@@ -1,0 +1,21 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_stepper"
+    app:startDestination="@id/step_1_dest">
+
+    <fragment
+        android:id="@+id/step_1_dest"
+        android:name="com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments.Step1Fragment"
+        android:label="Step 1" />
+
+    <fragment
+        android:id="@+id/step_2_dest"
+        android:name="com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments.Step2Fragment"
+        android:label="Step 2" />
+
+    <fragment
+        android:id="@+id/step_3_dest"
+        android:name="com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments.Step3Fragment"
+        android:label="Step 3" />
+
+</navigation>

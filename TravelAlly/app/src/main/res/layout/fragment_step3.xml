@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripViewModel" />
+    </data>
+
+    <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/profile_card_height">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/editor_box"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/white"
+                    android:padding="8dp">
+
+                    <com.linkedin.android.spyglass.ui.MentionsEditText
+                        android:id="@+id/editor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="Extra People"
+                        android:hint="Extra People"
+                        android:paddingStart="8dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="16dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mentions_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/editor_box"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp" />
+
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout>
+</layout>
+

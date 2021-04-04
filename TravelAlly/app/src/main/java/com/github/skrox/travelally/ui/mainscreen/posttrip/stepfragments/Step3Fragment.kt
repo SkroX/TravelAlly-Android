@@ -1,8 +1,6 @@
-package com.github.skrox.travelally.ui.mainscreen.posttrip
+package com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,13 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,16 +18,10 @@ import com.github.skrox.travelally.R
 import com.github.skrox.travelally.data.db.entities.UserMentionable
 import com.github.skrox.travelally.data.network.responses.UserSuggestionResponse
 import com.github.skrox.travelally.data.repositories.UserRepository
-import com.github.skrox.travelally.databinding.PostTripFragmentBinding
-import com.github.skrox.travelally.ui.mainscreen.MainActivity
-import com.github.skrox.travelally.ui.mainscreen.posttrip.temp.PostTripViewModelFacotry
+import com.github.skrox.travelally.databinding.FragmentStep3Binding
+import com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripActivity
+import com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripViewModel
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Status
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.linkedin.android.spyglass.mentions.MentionSpan
 import com.linkedin.android.spyglass.mentions.Mentionable
 import com.linkedin.android.spyglass.mentions.MentionsEditable
@@ -50,44 +38,33 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.math.RoundingMode
-import java.text.DecimalFormat
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
-
-class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListener,
+class Step3Fragment : Fragment(), QueryTokenReceiver, SuggestionsResultListener,
     SuggestionsVisibilityManager, MentionsEditText.MentionWatcher {
 
     @Inject
-    lateinit var placesClient: PlacesClient
-
-    @Inject
     lateinit var userRepository: UserRepository
+    private lateinit var postTripViewModel: PostTripViewModel
 
-    @Inject
-    lateinit var factory: PostTripViewModelFacotry
 
     private var recyclerView: RecyclerView? = null
     private var adapter: PersonMentionAdapter? = null
     private val BUCKET = "members-network"
     private var editor: MentionsEditText? = null
 
-    private val REQUEST_CODE_START = 2
-    private val REQUEST_CODE_END = 3
-
-    private val postTripViewModel: PostTripViewModel by viewModels { factory }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding: PostTripFragmentBinding =
-            DataBindingUtil.inflate(inflater, R.layout.post_trip_fragment, container, false)
+        postTripViewModel = (activity as PostTripActivity).postTripViewModel
+
+        // Inflate the layout for this fragment
+        val binding: FragmentStep3Binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_step3, container, false)
         binding.viewmodel = postTripViewModel
         binding.lifecycleOwner = this
-        binding.fragment = this;
+
         val tokenizerConfig = WordTokenizerConfig.Builder()
             .setWordBreakChars(", ")
             .setExplicitChars("")
@@ -107,30 +84,12 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
         adapter = PersonMentionAdapter((ArrayList<UserMentionable>() as List<Suggestible>))
         recyclerView?.adapter = adapter
 
-        setupButtonClick()
         return binding.root
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).mainComponent.inject(this)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        setPlaceListeners()
-
-    }
-
-    private fun setupButtonClick() {
-        postTripViewModel.getPostFields()?.observe(viewLifecycleOwner, Observer<Any> { ptm ->
-            Toast.makeText(
-                context,
-                "Email " + ptm,
-                Toast.LENGTH_SHORT
-            ).show()
-        })
+        (activity as PostTripActivity).postTripComponent.inject(this)
     }
 
     private var apiJob: Job? = null
@@ -277,114 +236,5 @@ class PostTripFragment : Fragment(), QueryTokenReceiver, SuggestionsResultListen
     override fun onMentionAdded(mention: Mentionable, text: String, start: Int, end: Int) {
         Log.e("mentioned", " " + mention.suggestibleId)
         postTripViewModel.addPeople(mention.suggestibleId)
-    }
-
-    fun showDatePickerDialog(v: View) {
-        // get fragment manager so we can launch from fragment
-        val fm: FragmentManager = parentFragmentManager
-        // create the datePickerFragment
-        val newFragment = DatePickerFragment();
-        if (v.id == R.id.start_date)
-            newFragment.setTargetFragment(this, REQUEST_CODE_START);
-        else
-            newFragment.setTargetFragment(this, REQUEST_CODE_END);
-        // show the datePicker
-        fm.let { newFragment.show(it, "datePicker") }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // check for the results
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_END || requestCode == REQUEST_CODE_START) {
-            // get date from string
-            val date = data?.getStringExtra("selectedDate")
-            // set the value of the editText
-
-            if (requestCode == REQUEST_CODE_START)
-                postTripViewModel.liveStartDate.postValue(date)
-            else
-                postTripViewModel.liveEndDate.postValue(date)
-        } else {
-            val status = Autocomplete.getStatusFromIntent(data!!)
-            Log.e("gpi", status.toString())
-        }
-    }
-
-    private fun setPlaceListeners() {
-        // Initialize the AutocompleteSupportFragment.
-        // Initialize the AutocompleteSupportFragment.
-        val autocompleteFragment: AutocompleteSupportFragment =
-            childFragmentManager.findFragmentById(R.id.start_place) as AutocompleteSupportFragment
-
-        // Specify the types of place data to return.
-
-        // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(
-            Arrays.asList(
-                Place.Field.ID,
-                Place.Field.NAME,
-                Place.Field.LAT_LNG
-            )
-        )
-
-        // Set up a PlaceSelectionListener to handle the response.
-
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                // TODO: Get info about the selected place.
-                Log.e(
-                    "place selected",
-                    "Place name " + place.name + " Place latlng " + place.latLng
-                )
-                val df = DecimalFormat("#.######")
-                df.roundingMode = RoundingMode.HALF_DOWN
-
-                postTripViewModel.startLat = df.format(place.latLng!!.latitude).toDouble()
-                postTripViewModel.startLon = df.format(place.latLng!!.longitude).toDouble()
-                postTripViewModel.startName = place.name!!
-            }
-
-            override fun onError(status: Status) {
-                // TODO: Handle the error.
-                //                Log.i(TAG, "An error occurred: $status")
-
-                Log.e("places error", status.toString())
-            }
-        })
-
-
-        val autocompleteFragmentend: AutocompleteSupportFragment =
-            childFragmentManager.findFragmentById(R.id.end_place) as AutocompleteSupportFragment
-
-        // Specify the types of place data to return.
-
-        // Specify the types of place data to return.
-        autocompleteFragmentend.setPlaceFields(
-            Arrays.asList(
-                Place.Field.ID,
-                Place.Field.NAME,
-                Place.Field.LAT_LNG
-            )
-        )
-
-        // Set up a PlaceSelectionListener to handle the response.
-
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragmentend.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                val df = DecimalFormat("#.######")
-                df.roundingMode = RoundingMode.HALF_DOWN
-                postTripViewModel.endLat = df.format(place.latLng!!.latitude).toDouble()
-                postTripViewModel.endLon = df.format(place.latLng!!.longitude).toDouble()
-                postTripViewModel.destName = place.name!!
-            }
-
-            override fun onError(status: Status) {
-                // TODO: Handle the error.
-                //                Log.i(TAG, "An error occurred: $status")
-            }
-        })
-
-
     }
 }

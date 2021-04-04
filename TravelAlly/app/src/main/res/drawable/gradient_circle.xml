@@ -7,9 +7,10 @@
         android:type="radial"
         android:startColor="#2196F3"
         android:endColor="#FFEB3B"
-        android:gradientRadius="110dp"/>
+        android:gradientRadius="110dp" />
 
     <size
         android:width="64dp"
         android:height="64dp"/>
+
 </shape>

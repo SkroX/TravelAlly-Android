@@ -1,0 +1,125 @@
+package com.github.skrox.travelally.ui.mainscreen.posttrip
+
+import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.navigation.ui.setupActionBarWithNavController
+import com.aceinteract.android.stepper.StepperNavListener
+import com.aceinteract.android.stepper.StepperNavigationView
+import com.github.skrox.travelally.R
+import com.github.skrox.travelally.TravelAllyApplication
+import com.github.skrox.travelally.di.PostTripComponent
+import com.github.skrox.travelally.ui.mainscreen.posttrip.temp.PostTripViewModelFacotry
+import com.github.skrox.travelally.util.findNavControllerFromFragmentContainer
+import kotlinx.android.synthetic.main.activity_post_trip.*
+import javax.inject.Inject
+
+
+class PostTripActivity : AppCompatActivity(), StepperNavListener {
+
+    lateinit var postTripComponent: PostTripComponent
+
+    @Inject
+    lateinit var factory: PostTripViewModelFacotry
+     val postTripViewModel: PostTripViewModel by viewModels { factory }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        postTripComponent =
+            (application as TravelAllyApplication).appComponent.PostTripComponent().create(
+                this
+            )
+        // Injects this activity to the just created registration component
+        postTripComponent.inject(this)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_post_trip)
+
+        stepper.initializeStepper()
+
+        setSupportActionBar(toolbar)
+
+        // Setup Action bar for title and up navigation.
+        setupActionBarWithNavController(findNavControllerFromFragmentContainer(R.id.frame_stepper))
+
+        button_next.setOnClickListener {
+            stepper.goToNextStep()
+        }
+        postTripViewModel.getPostFields()!!.observe(this, Observer<Any> { ptm ->
+            Toast.makeText(
+                this,
+                "Email " + ptm,
+                Toast.LENGTH_SHORT
+            ).show()
+        })
+        collectStateFlow()
+    }
+
+    private fun StepperNavigationView.initializeStepper() {
+//        viewModel.updateStepper(
+//            StepperSettings(
+//                widgetColor,
+//                textColor,
+//                textSize,
+//                iconSize
+//            )
+//        )
+
+        stepperNavListener = this@PostTripActivity
+        setupWithNavController(findNavControllerFromFragmentContainer(R.id.frame_stepper))
+    }
+
+    private fun collectStateFlow() {
+//        viewModel.stepperSettings.onEach {
+//            stepper.widgetColor = it.iconColor
+//            stepper.textColor = it.textColor
+//            stepper.textSize = it.textSize
+//            stepper.iconSize = it.iconSize
+//        }.launchIn(lifecycleScope)
+    }
+
+    override fun onStepChanged(step: Int) {
+//        showToast("Step changed to: $step")
+        Toast.makeText(this, "step " + step, Toast.LENGTH_SHORT).show()
+
+        if (step == 2) {
+            button_next.setImageResource(R.drawable.ic_check)
+        } else {
+            button_next.setImageResource(R.drawable.ic_right)
+        }
+    }
+
+    override fun onCompleted() {
+
+//        Toast.makeText(this, "stepper comp", Toast.LENGTH_SHORT).show()
+//        showToast("Stepper completed")
+        Log.e("post trip", "" + postTripViewModel.getPostFields()?.value)
+        postTripViewModel.onButtonClick()
+
+        Toast.makeText(
+            this,
+            "Email " + postTripViewModel.getPostFields(),
+            Toast.LENGTH_SHORT
+        ).show()
+
+    }
+
+    /**
+     * Use navigation controller to navigate up.
+     */
+    override fun onSupportNavigateUp(): Boolean =
+        findNavControllerFromFragmentContainer(R.id.frame_stepper).navigateUp()
+
+    /**
+     * Navigate up when the back button is pressed.
+     */
+    override fun onBackPressed() {
+        if (stepper.currentStep == 0) {
+            super.onBackPressed()
+        } else {
+            findNavControllerFromFragmentContainer(R.id.frame_stepper).navigateUp()
+        }
+    }
+}

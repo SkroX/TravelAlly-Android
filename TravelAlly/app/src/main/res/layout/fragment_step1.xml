@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments.Step1Fragment" />
+    </data>
+
+    <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/profile_card_height">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/start_date"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@color/white"
+                    android:onClick="@{(v)-> fragment.showDatePickerDialog(v)}"
+                    android:padding="8dp">
+                    <!--                    android:onClick="@{(v) ->  fragment.pickDate(v)}"-->
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/start_date_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="start date"
+                        android:text="@={viewmodel.form.fields.start_time}"
+                        app:bindServerDate="@{viewmodel.liveStartDate}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/end_date"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_date"
+                    android:layout_margin="16dp"
+                    android:background="@color/white"
+                    android:onClick="@{(v)-> fragment.showDatePickerDialog(v)}"
+                    android:padding="8dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/end_date_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="end date"
+                        android:text="@={viewmodel.form.fields.end_time}"
+                        app:bindServerDate="@{viewmodel.liveEndDate}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/start_placeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/end_date"
+                    android:layout_margin="16dp"
+                    android:text="Start place" />
+
+                <fragment
+                    android:id="@+id/start_place"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_placeTV"
+                    android:layout_margin="16dp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/end_placeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/start_place"
+                    android:layout_margin="16dp"
+                    android:text="End place" />
+
+                <fragment
+                    android:id="@+id/end_place"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/end_placeTV"
+                    android:layout_margin="16dp" />
+
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+    </com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout>
+</layout>
+

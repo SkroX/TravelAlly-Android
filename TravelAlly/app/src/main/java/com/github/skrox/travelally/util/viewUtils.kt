@@ -5,7 +5,10 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
@@ -74,4 +77,10 @@ fun TextView.dateText(startDate: String, endDate: String) {
     this.text = result
     // Format the result with formatter, and put the result in var named "after"
 //    val result = formatter.format(parse!!)
+}
+
+fun AppCompatActivity.findNavControllerFromFragmentContainer(id: Int): NavController {
+    val fragment = supportFragmentManager.findFragmentById(id)
+    check(fragment is NavHostFragment) { ("Activity $this does not have a NavHostFragment") }
+    return fragment.navController
 }

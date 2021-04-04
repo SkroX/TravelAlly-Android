@@ -65,4 +65,8 @@
         android:id="@+id/userProfileFragment"
         android:name="com.github.skrox.travelally.ui.mainscreen.userprofile.UserProfileFragment"
         android:label="UserProfileFragment" />
+    <activity
+        android:id="@+id/postTripActivity"
+        android:name="com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripActivity"
+        android:label="PostTripActivity" />
 </navigation>

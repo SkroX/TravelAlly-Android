@@ -5,8 +5,11 @@ import android.content.Context
 import com.github.skrox.travelally.ui.auth.LoginActivity
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.ui.mainscreen.home.HomeFragment
-import com.github.skrox.travelally.ui.mainscreen.posttrip.DatePickerFragment
+import com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripActivity
 import com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripFragment
+import com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments.Step1Fragment
+import com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments.Step2Fragment
+import com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments.Step3Fragment
 import com.github.skrox.travelally.ui.mainscreen.tripdetail.TripDetailFragment
 import com.github.skrox.travelally.ui.mainscreen.userprofile.UserProfileFragment
 import dagger.BindsInstance
@@ -30,14 +33,17 @@ interface AppComponent {
 
     fun MainComponent(): MainComponent.Factory
 
+    fun PostTripComponent(): PostTripComponent.Factory
+
+
 }
 
 @ActivityScope
 @Subcomponent(modules = [LoginModule::class])
-interface LoginComponent{
+interface LoginComponent {
 
     @Subcomponent.Factory
-    interface Factory{
+    interface Factory {
         fun create(@BindsInstance activity: Activity): LoginComponent
     }
 
@@ -47,10 +53,25 @@ interface LoginComponent{
 
 @ActivityScope
 @Subcomponent(modules = [LoginModule::class])
-interface MainComponent{
+interface PostTripComponent {
 
     @Subcomponent.Factory
-    interface Factory{
+    interface Factory {
+        fun create(@BindsInstance activity: Activity): PostTripComponent
+    }
+
+    fun inject(activity: PostTripActivity)
+    fun inject(fragment: Step1Fragment)
+    fun inject(fragment: Step2Fragment)
+    fun inject(fragment: Step3Fragment)
+}
+
+@ActivityScope
+@Subcomponent(modules = [LoginModule::class])
+interface MainComponent {
+
+    @Subcomponent.Factory
+    interface Factory {
         fun create(@BindsInstance activity: Activity): MainComponent
     }
 
@@ -58,7 +79,7 @@ interface MainComponent{
     fun inject(activity: MainActivity)
     fun inject(fragment: TripDetailFragment)
     fun inject(fragment: UserProfileFragment)
-    fun inject(fragment:PostTripFragment)
+    fun inject(fragment: PostTripFragment)
 
 }
 

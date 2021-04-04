@@ -31,6 +31,10 @@ class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewMode
     private var onFocusEmail: OnFocusChangeListener? = null
     private var onFocusPassword: OnFocusChangeListener? = null
 
+    init {
+        Log.e("posttripmodel", "created")
+    }
+
     fun addPeople(id: Int) {
         extraPeople.add(id)
     }
