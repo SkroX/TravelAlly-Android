@@ -23,6 +23,16 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/profile_card_height">
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="Tip: Add an attractive high definition image of destination to attract more people"
+                    android:textColor="#99000000"
+                    android:drawableStart="@drawable/ic_baseline_auto_fix_high_24"
+                    android:drawablePadding="8dp"/>
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/imageCardView"
                     android:layout_width="match_parent"
@@ -31,7 +41,8 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     app:cardCornerRadius="32dp"
-                    app:cardUseCompatPadding="true">
+                    app:cardUseCompatPadding="true"
+                    android:layout_below="@+id/tip">
 
                     <ImageView
                         android:layout_width="200dp"

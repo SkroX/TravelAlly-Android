@@ -6,7 +6,6 @@ import com.github.skrox.travelally.ui.auth.LoginActivity
 import com.github.skrox.travelally.ui.mainscreen.MainActivity
 import com.github.skrox.travelally.ui.mainscreen.home.HomeFragment
 import com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripActivity
-import com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripFragment
 import com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments.Step1Fragment
 import com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments.Step2Fragment
 import com.github.skrox.travelally.ui.mainscreen.posttrip.stepfragments.Step3Fragment
@@ -79,8 +78,6 @@ interface MainComponent {
     fun inject(activity: MainActivity)
     fun inject(fragment: TripDetailFragment)
     fun inject(fragment: UserProfileFragment)
-    fun inject(fragment: PostTripFragment)
-
 }
 
 

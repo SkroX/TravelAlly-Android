@@ -2,6 +2,8 @@ package com.github.skrox.travelally.ui.mainscreen.posttrip
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +16,8 @@ import com.github.skrox.travelally.TravelAllyApplication
 import com.github.skrox.travelally.di.PostTripComponent
 import com.github.skrox.travelally.ui.mainscreen.posttrip.temp.PostTripViewModelFacotry
 import com.github.skrox.travelally.util.findNavControllerFromFragmentContainer
+import com.google.android.material.button.MaterialButton
+import com.orhanobut.dialogplus.*
 import kotlinx.android.synthetic.main.activity_post_trip.*
 import javax.inject.Inject
 
@@ -24,7 +28,7 @@ class PostTripActivity : AppCompatActivity(), StepperNavListener {
 
     @Inject
     lateinit var factory: PostTripViewModelFacotry
-     val postTripViewModel: PostTripViewModel by viewModels { factory }
+    val postTripViewModel: PostTripViewModel by viewModels { factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -97,13 +101,41 @@ class PostTripActivity : AppCompatActivity(), StepperNavListener {
 //        showToast("Stepper completed")
         Log.e("post trip", "" + postTripViewModel.getPostFields()?.value)
         postTripViewModel.onButtonClick()
-
         Toast.makeText(
             this,
             "Email " + postTripViewModel.getPostFields(),
             Toast.LENGTH_SHORT
         ).show()
+        showCompleteDialog()
+    }
 
+    private fun showCompleteDialog() {
+        val holder: Holder
+        holder = ViewHolder(R.layout.dialog_content)
+        val builder = DialogPlus.newDialog(this).apply {
+            setContentHolder(holder)
+            setGravity(Gravity.BOTTOM)
+            setContentHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+            overlayBackgroundResource = R.color.transparent_overlay
+            isCancelable = false
+            onDismissListener = OnDismissListener { }
+            contentBackgroundResource = R.color.colorPrimary
+            contentBackgroundResource = R.drawable.corner
+            //                .setOutMostMargin(0, 100, 0, 0)
+
+            setOnClickListener { dialog, view ->
+                if (view is MaterialButton) {
+                    Toast.makeText(this.context, "yes", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+
+            setOnBackPressListener {
+                finish()
+            }
+        }
+
+        builder.create().show()
     }
 
     /**

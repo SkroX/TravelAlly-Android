@@ -22,11 +22,22 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/profile_card_height">
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:drawableStart="@drawable/ic_baseline_auto_fix_high_24"
+                    android:drawablePadding="8dp"
+                    android:text="Start typing the name of people going with you on this trip to add them!"
+                    android:textColor="#99000000" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/editor_box"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tip"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
@@ -38,7 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:autofillHints="Extra People"
-                        android:hint="Extra People"
+                        android:hint="Search People"
                         android:paddingStart="8dp"
                         android:paddingTop="16dp"
                         android:paddingEnd="8dp"

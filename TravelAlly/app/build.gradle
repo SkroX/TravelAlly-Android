@@ -105,6 +105,11 @@ dependencies {
 
     implementation 'com.github.acefalobi:android-stepper:0.2.1'
 
+    implementation 'com.orhanobut:dialogplus:1.11@aar'
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
+
 
 
 }

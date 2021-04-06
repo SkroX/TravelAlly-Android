@@ -71,7 +71,7 @@ class Step1Fragment : Fragment() {
         val fm: FragmentManager = parentFragmentManager
         // create the datePickerFragment
         val newFragment = DatePickerFragment();
-        if (v.id == R.id.start_date)
+        if (v.id == R.id.start_date_tv || v.id == R.id.start_date)
             newFragment.setTargetFragment(this, REQUEST_CODE_START);
         else
             newFragment.setTargetFragment(this, REQUEST_CODE_END);

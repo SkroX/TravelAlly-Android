@@ -17,9 +17,6 @@
         <action
             android:id="@+id/action_nav_home_to_tripDetailFragment"
             app:destination="@id/tripDetailFragment" />
-        <action
-            android:id="@+id/action_nav_home_to_postTripFragment"
-            app:destination="@id/postTripFragment" />
 
     </fragment>
     <fragment
@@ -57,10 +54,6 @@
             android:defaultValue="0"
             app:argType="integer" />
     </fragment>
-    <fragment
-        android:id="@+id/postTripFragment"
-        android:name="com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripFragment"
-        android:label="PostTripFragment" />
     <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.github.skrox.travelally.ui.mainscreen.userprofile.UserProfileFragment"
