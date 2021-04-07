@@ -34,7 +34,6 @@ import com.github.skrox.travelally.util.Constants.VIEW_TYPE_NEARME_ITEMS
 import com.github.skrox.travelally.util.Constants.VIEW_TYPE_POPULAR_HEADING
 import com.github.skrox.travelally.util.Constants.VIEW_TYPE_POPULAR_ITEMS
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -168,8 +167,8 @@ class HomeFragment : Fragment(), HomeListener {
         parentAdapter.notifyDataSetChanged()
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         activity?.findViewById<CardView>(R.id.profile_card)?.visibility = View.GONE
     }
 

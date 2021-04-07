@@ -11,22 +11,26 @@
 
     <com.google.android.material.circularreveal.coordinatorlayout.CircularRevealCoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false">
+            android:clipToPadding="false"
+            android:fitsSystemWindows="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true">
 
                 <FrameLayout
                     android:id="@+id/frame"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp">
+                    android:layout_height="500dp"
+                    android:fitsSystemWindows="true">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -49,7 +53,9 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
-                            android:layout_margin="16dp"
+                            android:layout_marginTop="32dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="16dp"
                             android:onClick="@{vm::logout}"
                             android:src="@drawable/ic_baseline_logout_24" />
 
@@ -245,9 +251,9 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_below="@id/loc_rad_text"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
                     android:layout_marginBottom="32dp"
-                    android:layout_marginStart="16dp"
                     android:background="@drawable/gradient_circle"
                     android:clickable="true"
                     android:clipToPadding="false"
