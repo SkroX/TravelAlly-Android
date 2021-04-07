@@ -1,5 +1,6 @@
 package com.github.skrox.travelally.ui.mainscreen
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -20,8 +21,8 @@ import com.github.skrox.travelally.R
 import com.github.skrox.travelally.TravelAllyApplication
 import com.github.skrox.travelally.databinding.ActivityMainBinding
 import com.github.skrox.travelally.di.MainComponent
+import com.github.skrox.travelally.ui.auth.LoginActivity
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import de.hdodenhof.circleimageview.CircleImageView
 import javax.inject.Inject
@@ -90,6 +91,11 @@ class MainActivity : AppCompatActivity() {
             if (user != null) {
                 Log.e("main activity", user.displayName)
                 viewModel.user.postValue(user)
+            } else {
+                Intent(this, LoginActivity::class.java).also {
+                    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(it)
+                }
             }
         })
     }

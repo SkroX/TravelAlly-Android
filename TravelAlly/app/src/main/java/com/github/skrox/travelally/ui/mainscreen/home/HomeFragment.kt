@@ -151,7 +151,7 @@ class HomeFragment : Fragment(), HomeListener {
             ORDER_POPULAR_HEADING
         )
         addToParentList(
-            ParentModel(VIEW_TYPE_NEARME_HEADING, "Near You Trips", mutableListOf()),
+            ParentModel(VIEW_TYPE_NEARME_HEADING, "Trips Near You", mutableListOf()),
             ORDER_NEARME_HEADING
         )
         addToParentList(

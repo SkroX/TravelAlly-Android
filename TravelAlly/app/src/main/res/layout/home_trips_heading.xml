@@ -32,11 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:layout_margin="16dp"
-            android:layout_weight="1"
             android:onClick="@{headingItem::onClick}"
             android:padding="0dp"
             android:text="view all"
-            android:textAlignment="viewEnd"
             android:textSize="12sp" />
 
     </LinearLayout>

@@ -62,4 +62,12 @@
         android:id="@+id/postTripActivity"
         android:name="com.github.skrox.travelally.ui.mainscreen.posttrip.PostTripActivity"
         android:label="PostTripActivity" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.github.skrox.travelally.ui.auth.LoginActivity"
+        android:label="LoginActivity" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.github.skrox.travelally.ui.mainscreen.MainActivity"
+        android:label="MainActivity" />
 </navigation>
