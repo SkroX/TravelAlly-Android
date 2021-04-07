@@ -110,7 +110,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="16dp"
-                                android:text="@{trip.trip.extra_people.size() + ` people`}"
+                                android:text="@{trip.trip.extra_people.size()+1 + ` people`}"
                                 android:textColor="@color/white"
                                 android:textSize="12sp"
                                 app:layout_constraintBottom_toBottomOf="@+id/avatar"

@@ -1,4 +1,5 @@
 package com.github.skrox.travelally.data.preferences
+
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
@@ -42,10 +43,10 @@ class PreferenceProvider @Inject constructor(
     }
 
     fun getId(): String? {
-        return preference.getString(KEY_USER_ID, "14")
+        return preference.getString(KEY_USER_ID, null)
     }
 
-    fun saveLatLonRadius(lat: Double, lon:Double, radius:Double){
+    fun saveLatLonRadius(lat: Double, lon: Double, radius: Double) {
         preference.edit().putString(
             KEY_LAT,
             lat.toString()
