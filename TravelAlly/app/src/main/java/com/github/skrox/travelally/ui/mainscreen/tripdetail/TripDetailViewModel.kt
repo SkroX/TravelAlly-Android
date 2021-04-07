@@ -52,5 +52,9 @@ class TripDetailViewModel(private val tripsRepository: TripsRepository) : ViewMo
         viewModelScope.launch { tripsRepository.requestToJoin(tripId.value!!) }
     }
 
+    fun voteTrip(view: View) {
+        viewModelScope.launch { tripsRepository.voteTrip(tripId.value!!) }
+    }
+
 
 }

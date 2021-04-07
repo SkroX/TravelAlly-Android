@@ -65,10 +65,10 @@ fun TextView.dateText(startDate: String, endDate: String) {
     val startMonth = cal[Calendar.MONTH]
     cal.time = parseEnd
     val endMonth = cal[Calendar.MONTH]
-    var result:String
-    if(startMonth==endMonth){
+    var result: String
+    if (startMonth == endMonth) {
         result = formatter2.format(parseStart)
-    }else{
+    } else {
         result = formatter.format(parseStart)
     }
 
@@ -78,6 +78,7 @@ fun TextView.dateText(startDate: String, endDate: String) {
     // Format the result with formatter, and put the result in var named "after"
 //    val result = formatter.format(parse!!)
 }
+
 
 fun AppCompatActivity.findNavControllerFromFragmentContainer(id: Int): NavController {
     val fragment = supportFragmentManager.findFragmentById(id)

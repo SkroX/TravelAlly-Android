@@ -37,7 +37,7 @@ class UserRepository @Inject constructor(
     fun saveuser(authResponse: AuthResponse, account: GoogleSignInAccount?) {
 //        db.getUserDao().upsert(authResponse.user)
         prefs.saveToken(authResponse.token)
-        prefs.saveId(authResponse.user.id.toString())
+//        prefs.saveId(authResponse.user.id.toString())
         user.postValue(account)
     }
 

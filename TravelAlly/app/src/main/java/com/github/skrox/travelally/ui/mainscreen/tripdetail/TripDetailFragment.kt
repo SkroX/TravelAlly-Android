@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,10 +18,11 @@ import javax.inject.Inject
 
 class TripDetailFragment : Fragment(), TripDetailListener {
 
-    @Inject lateinit var tripDetailVMFactory: TripDetailVMFactory
+    @Inject
+    lateinit var tripDetailVMFactory: TripDetailVMFactory
 
     private var tripId: Int? = null
-    private val viewModel: TripDetailViewModel by viewModels{tripDetailVMFactory}
+    private val viewModel: TripDetailViewModel by viewModels { tripDetailVMFactory }
 
 
     override fun onAttach(context: Context) {
@@ -37,14 +39,15 @@ class TripDetailFragment : Fragment(), TripDetailListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding: TripDetailFragmentBinding =
             DataBindingUtil.inflate(inflater, R.layout.trip_detail_fragment, container, false)
         binding.trip = viewModel
         binding.lifecycleOwner = this
-        viewModel.tripDetailListener=this
+        viewModel.tripDetailListener = this
         viewModel.tripId.postValue(tripId)
+        activity?.findViewById<CardView>(R.id.profile_card)?.visibility = View.GONE
         return binding.root
     }
 
@@ -55,7 +58,17 @@ class TripDetailFragment : Fragment(), TripDetailListener {
     }
 
     override fun onFailure(msg: String) {
-        Toast.makeText(context,msg,Toast.LENGTH_LONG).show()
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 
+    override fun onPause() {
+        super.onPause()
+        activity?.findViewById<CardView>(R.id.profile_card)?.visibility = View.VISIBLE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.findViewById<CardView>(R.id.profile_card)?.visibility = View.GONE
+
+    }
 }

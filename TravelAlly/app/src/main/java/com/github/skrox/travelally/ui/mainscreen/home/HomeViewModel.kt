@@ -100,7 +100,7 @@ class HomeViewModel( private val userRepository: UserRepository,
     fun voteTrip(view: View, tripid: Int){
         Log.e("upvote",  " " + tripid)
         viewModelScope.launch {
-            tripsRepository.voteTrip(tripid, userRepository.getUserId()!!)
+            tripsRepository.voteTrip(tripid)
         }
     }
 }
