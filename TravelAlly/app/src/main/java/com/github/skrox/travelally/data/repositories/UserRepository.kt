@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.github.skrox.travelally.data.db.entities.User
 import com.github.skrox.travelally.data.network.MyApi
 import com.github.skrox.travelally.data.network.SafeApiRequest
 import com.github.skrox.travelally.data.network.postobjects.SendToken
@@ -61,7 +62,10 @@ class UserRepository @Inject constructor(
 
         val queryMap = mapOf<String, String>("q" to query)
 
-        val response = apiRequest { api.getUserSuggestions(authMap, queryMap) }
-        return response
+        return apiRequest { api.getUserSuggestions(authMap, queryMap) }
+    }
+
+    suspend fun getUser(id: Int): User {
+        return apiRequest { api.getUser(id, authMap) }
     }
 }

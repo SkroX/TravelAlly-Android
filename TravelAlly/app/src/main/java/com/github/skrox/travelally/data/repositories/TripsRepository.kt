@@ -2,6 +2,7 @@ package com.github.skrox.travelally.data.repositories
 
 import android.util.Log
 import com.github.skrox.travelally.data.db.entities.Trip
+import com.github.skrox.travelally.data.db.entities.User
 import com.github.skrox.travelally.data.db.entities.Vote
 import com.github.skrox.travelally.data.network.MyApi
 import com.github.skrox.travelally.data.network.SafeApiRequest
@@ -64,5 +65,9 @@ class TripsRepository @Inject constructor(
 
     suspend fun requestToJoin(tripId: Int) {
         return apiRequest { api.requestToJoin(tripId, authMap) }
+    }
+
+    suspend fun getOrganizer(id: Int): User {
+        return apiRequest { api.getUser(id, authMap) }
     }
 }

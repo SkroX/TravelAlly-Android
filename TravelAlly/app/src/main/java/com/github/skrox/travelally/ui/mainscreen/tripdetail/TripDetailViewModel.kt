@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.skrox.travelally.data.db.entities.Trip
+import com.github.skrox.travelally.data.db.entities.User
 import com.github.skrox.travelally.data.repositories.TripsRepository
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -18,6 +19,8 @@ class TripDetailViewModel(private val tripsRepository: TripsRepository) : ViewMo
     val tripId: MutableLiveData<Int> = MutableLiveData()
 
     val trip: MutableLiveData<Trip> = MutableLiveData()
+
+    val organizer: MutableLiveData<User> = MutableLiveData()
 
     init {
         tripId.observeForever {
@@ -34,18 +37,22 @@ class TripDetailViewModel(private val tripsRepository: TripsRepository) : ViewMo
         val outputFormat = SimpleDateFormat("EEE, d MMM yyyy 'at' HH:mm:ss")
         try {
             val t: Trip = tripsRepository.getTrip(id)
-
             var d: Date = inputFormat.parse(t.start_time)
             t.start_time = outputFormat.format(d)
-
             d = inputFormat.parse(t.end_time)
             t.end_time = outputFormat.format(d)
-
             trip.postValue(t)
+            getOrganizer(t.organizer)
+
         } catch (e: Exception) {
             tripDetailListener?.onFailure(e.message ?: "Unknown cause")
         }
 
+    }
+
+    private suspend fun getOrganizer(id: Int) {
+        val user = tripsRepository.getOrganizer(id)
+        organizer.postValue(user)
     }
 
     fun requestToJoin(view: View) {

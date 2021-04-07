@@ -1,6 +1,7 @@
 package com.github.skrox.travelally.data.network
 
 import com.github.skrox.travelally.data.db.entities.Trip
+import com.github.skrox.travelally.data.db.entities.User
 import com.github.skrox.travelally.data.db.entities.Vote
 import com.github.skrox.travelally.data.network.postobjects.PostTrip
 import com.github.skrox.travelally.data.network.postobjects.SendToken
@@ -71,6 +72,12 @@ interface MyApi {
         @HeaderMap headers: Map<String, String?>,
         @QueryMap query: Map<String, String>
     ): Response<List<UserSuggestionResponse>>
+
+    @GET("user/user/{id}")
+    suspend fun getUser(
+        @Path("id") id: Int,
+        @HeaderMap headers: Map<String, String?>
+    ): Response<User>
 
 
 //    companion object{
