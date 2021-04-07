@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -33,6 +34,8 @@ import com.github.skrox.travelally.util.Constants.VIEW_TYPE_NEARME_ITEMS
 import com.github.skrox.travelally.util.Constants.VIEW_TYPE_POPULAR_HEADING
 import com.github.skrox.travelally.util.Constants.VIEW_TYPE_POPULAR_ITEMS
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 
@@ -70,22 +73,20 @@ class HomeFragment : Fragment(), HomeListener {
         binding.viewmodel = homeViewModel
         binding.lifecycleOwner = this
         homeViewModel.homeListener = this
-
         navController = this.findNavController()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fab.setOnClickListener {
+            navController.navigate(R.id.postTripActivity)
+        }
         parents.clear()
         mItemOrderList.clear()
         bindUI()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-//        navController.navigate(R.id.action_nav_home_to_postTripFragment)
-    }
 
     override fun onFailure(message: String) {
 //        root_layout.snackbar(message)
@@ -165,6 +166,17 @@ class HomeFragment : Fragment(), HomeListener {
         parents.add(pos, par)
         parentAdapter.submitList(parents)
         parentAdapter.notifyDataSetChanged()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activity?.findViewById<CardView>(R.id.profile_card)?.visibility = View.GONE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.findViewById<CardView>(R.id.profile_card)?.visibility = View.VISIBLE
+
     }
 
 }

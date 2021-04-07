@@ -58,17 +58,7 @@ class TripDetailFragment : Fragment(), TripDetailListener {
     }
 
     override fun onFailure(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
     }
 
-    override fun onPause() {
-        super.onPause()
-        activity?.findViewById<CardView>(R.id.profile_card)?.visibility = View.VISIBLE
-    }
-
-    override fun onResume() {
-        super.onResume()
-        activity?.findViewById<CardView>(R.id.profile_card)?.visibility = View.GONE
-
-    }
 }

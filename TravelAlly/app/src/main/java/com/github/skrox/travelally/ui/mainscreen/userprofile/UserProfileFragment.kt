@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -50,17 +49,6 @@ class UserProfileFragment : Fragment(), UserProfileListener {
         })
         activity?.findViewById<CardView>(R.id.profile_card)?.visibility = GONE
         return binding.root
-    }
-
-    override fun onPause() {
-        super.onPause()
-        activity?.findViewById<CardView>(R.id.profile_card)?.visibility = VISIBLE
-    }
-
-    override fun onResume() {
-        super.onResume()
-        activity?.findViewById<CardView>(R.id.profile_card)?.visibility = GONE
-
     }
 
     override fun onFailure(msg: String) {

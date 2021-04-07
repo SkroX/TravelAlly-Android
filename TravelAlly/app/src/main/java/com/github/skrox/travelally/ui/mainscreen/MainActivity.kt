@@ -68,11 +68,6 @@ class MainActivity : AppCompatActivity() {
         val navView: NavigationView = findViewById(R.id.nav_view)
         navController = findNavController(R.id.nav_host_fragment)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            navController.navigate(R.id.postTripActivity)
-        }
-
         val userProfile = findViewById<CircleImageView>(R.id.profile_image)
         userProfile.setOnClickListener {
             navController.navigateUp()
