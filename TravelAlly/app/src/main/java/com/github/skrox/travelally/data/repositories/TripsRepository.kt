@@ -18,11 +18,10 @@ class TripsRepository @Inject constructor(
     private val prefs: PreferenceProvider
 ) : SafeApiRequest() {
 
-    private val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
 
     suspend fun getPopularTrips(): List<Trip> {
         //TODO:check if fetch needed by db
-
+        val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
         val response = apiRequest { api.getPopularTrips(authMap) }
         Log.e("triprepo", response.trips.size.toString())
         return response.trips
@@ -31,6 +30,8 @@ class TripsRepository @Inject constructor(
     }
 
     suspend fun getTripsNearMe(): List<Trip> {
+        val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
+
         //TODO:check if fetch needed by db
 
         val queryMap = mapOf<String, Double>(
@@ -44,30 +45,42 @@ class TripsRepository @Inject constructor(
     }
 
     suspend fun getAllTrips(): List<Trip> {
+        val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
+
         //TODO:check if fetch needed by db
 
         return apiRequest { api.getAllTrips(authMap) }
     }
 
     suspend fun getTrip(id: Int): Trip {
+        val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
+
         return apiRequest { api.getTrip(id, authMap) }
     }
 
     suspend fun postTrip(trip: PostTrip): Trip {
+        val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
+
         return apiRequest { api.postTrip(authMap, trip) }
     }
 
     suspend fun voteTrip(tripId: Int): Trip {
+        val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
+
         val userId = prefs.getId()
         Log.e("userid", userId)
         return apiRequest { api.voteTrip(authMap, Vote(tripId, userId!!)) }
     }
 
     suspend fun requestToJoin(tripId: Int) {
+        val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
+
         return apiRequest { api.requestToJoin(tripId, authMap) }
     }
 
     suspend fun getOrganizer(id: Int): User {
+        val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
+
         return apiRequest { api.getUser(id, authMap) }
     }
 }

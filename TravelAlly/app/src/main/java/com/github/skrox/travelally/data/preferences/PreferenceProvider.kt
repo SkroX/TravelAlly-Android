@@ -2,6 +2,7 @@ package com.github.skrox.travelally.data.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.preference.PreferenceManager
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,6 +27,8 @@ class PreferenceProvider @Inject constructor(
 
 
     fun saveToken(token: String) {
+        Log.e("token save prefs", token)
+
         preference.edit().putString(
             KEY_TOKEN,
             token
@@ -33,6 +36,7 @@ class PreferenceProvider @Inject constructor(
     }
 
     fun getToken(): String? {
+        Log.e("prefpro", preference.getString(KEY_TOKEN, null))
         return preference.getString(KEY_TOKEN, null)
     }
 
