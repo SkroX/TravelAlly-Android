@@ -3,7 +3,6 @@ package com.github.skrox.travelally.ui.mainscreen.home
 import android.content.Context
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,15 +17,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class HomeViewModel( private val userRepository: UserRepository,
-                     private val mGoogleSignInClient: GoogleSignInClient,
-                     private val tripsRepository: TripsRepository) : ViewModel() {
+class HomeViewModel(
+    private val userRepository: UserRepository,
+    private val mGoogleSignInClient: GoogleSignInClient,
+    private val tripsRepository: TripsRepository
+) : ViewModel() {
 
-    var homeListener:HomeListener? = null
+    var homeListener: HomeListener? = null
 
-    fun getuser(context:Context)=userRepository.getUser(context)
+    fun getuser(context: Context) = userRepository.getUser(context)
 
-    fun logout(view:View){
+    fun logout(view: View) {
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(view.context as MainActivity, OnCompleteListener<Void?> {
                 // ...
@@ -34,37 +35,22 @@ class HomeViewModel( private val userRepository: UserRepository,
             })
     }
 
-    init {
-        Log.e("homevm",this.toString())
-    }
-//    val popularTrips:LiveData<List<Trip>> = liveData {
-//
-//        try {
-//            val data = tripsRepository.getPopularTrips()
-//            emit(data)
-//        }catch (e:Exception){
-//            Log.e("error homevm", e.message)
-//            homeListener?.onFailure(e.message ?: "Unknown cause")
-//        }
-//    }
-
-
     private val popularTrips = MutableLiveData<List<Trip>>()
-    val _popularTrips : LiveData<List<Trip>> = popularTrips
+    val _popularTrips: LiveData<List<Trip>> = popularTrips
 
     private val tripsNearMe = MutableLiveData<List<Trip>>()
-    val _tripsNearMe : LiveData<List<Trip>> = tripsNearMe
+    val _tripsNearMe: LiveData<List<Trip>> = tripsNearMe
 
     private val allTrips = MutableLiveData<List<Trip>>()
-    val _allTrips : LiveData<List<Trip>> = allTrips
+    val _allTrips: LiveData<List<Trip>> = allTrips
 
-    fun loadPopularTrips()=viewModelScope.launch(Dispatchers.IO){
+    fun loadPopularTrips() = viewModelScope.launch(Dispatchers.IO) {
 
-        if(popularTrips.value==null){
+        if (popularTrips.value == null) {
             try {
-                val trips=tripsRepository.getPopularTrips()
+                val trips = tripsRepository.getPopularTrips()
                 popularTrips.postValue(trips)
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 homeListener?.onFailure(e.message ?: "Unknown cause")
                 e.printStackTrace()
             }
@@ -73,34 +59,39 @@ class HomeViewModel( private val userRepository: UserRepository,
 
     }
 
-    fun loadTripsNearMe()=viewModelScope.launch(Dispatchers.IO) {
-        if(tripsNearMe.value==null){
+    fun loadTripsNearMe() = viewModelScope.launch(Dispatchers.IO) {
+        if (tripsNearMe.value == null) {
             try {
                 val trips = tripsRepository.getTripsNearMe()
                 tripsNearMe.postValue(trips)
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 homeListener?.onFailure(e.message ?: "Unknown cause")
                 e.printStackTrace()
             }
         }
     }
 
-    fun loadAllTrips()=viewModelScope.launch(Dispatchers.IO) {
-        if(allTrips.value==null){
+    fun loadAllTrips() = viewModelScope.launch(Dispatchers.IO) {
+        if (allTrips.value == null) {
             try {
                 val trips = tripsRepository.getAllTrips()
                 allTrips.postValue(trips)
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 homeListener?.onFailure(e.message ?: "Unknown cause")
                 e.printStackTrace()
             }
         }
     }
 
-    fun voteTrip(view: View, tripid: Int){
-        Log.e("upvote",  " " + tripid)
+    fun voteTrip(view: View, tripid: Int) {
+        Log.e("upvote", " " + tripid)
         viewModelScope.launch {
-            tripsRepository.voteTrip(tripid)
+            try {
+                tripsRepository.voteTrip(tripid)
+            } catch (e: Exception) {
+                homeListener?.onFailure(e.message ?: "Unknown cause")
+                e.printStackTrace()
+            }
         }
     }
 }

@@ -16,13 +16,19 @@ import com.github.skrox.travelally.TravelAllyApplication
 import com.github.skrox.travelally.di.PostTripComponent
 import com.github.skrox.travelally.ui.mainscreen.posttrip.temp.PostTripViewModelFacotry
 import com.github.skrox.travelally.util.findNavControllerFromFragmentContainer
+import com.github.skrox.travelally.util.hide
+import com.github.skrox.travelally.util.show
+import com.github.skrox.travelally.util.snackbar
 import com.google.android.material.button.MaterialButton
 import com.orhanobut.dialogplus.*
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_post_trip.*
+import kotlinx.android.synthetic.main.activity_post_trip.progress_circular
+import kotlinx.android.synthetic.main.activity_post_trip.root_layout
 import javax.inject.Inject
 
 
-class PostTripActivity : AppCompatActivity(), StepperNavListener {
+class PostTripActivity : AppCompatActivity(), StepperNavListener, PostTripListener {
 
     lateinit var postTripComponent: PostTripComponent
 
@@ -59,6 +65,8 @@ class PostTripActivity : AppCompatActivity(), StepperNavListener {
             ).show()
         })
         collectStateFlow()
+
+        postTripViewModel.postTripListener = this
     }
 
     private fun StepperNavigationView.initializeStepper() {
@@ -106,7 +114,6 @@ class PostTripActivity : AppCompatActivity(), StepperNavListener {
             "Email " + postTripViewModel.getPostFields(),
             Toast.LENGTH_SHORT
         ).show()
-        showCompleteDialog()
     }
 
     private fun showCompleteDialog() {
@@ -153,5 +160,23 @@ class PostTripActivity : AppCompatActivity(), StepperNavListener {
         } else {
             findNavControllerFromFragmentContainer(R.id.frame_stepper).navigateUp()
         }
+    }
+
+    override fun onStarted() {
+        progress_circular.show()
+        Log.e("post trip", " started")
+    }
+
+    override fun onSuccess() {
+        Log.e("post trip", "successs")
+        progress_circular.hide()
+
+        showCompleteDialog()
+    }
+
+    override fun onFailure(msg: String) {
+        progress_circular.hide()
+
+        root_layout.snackbar(msg)
     }
 }

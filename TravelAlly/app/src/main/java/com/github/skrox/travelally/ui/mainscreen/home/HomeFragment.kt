@@ -33,6 +33,7 @@ import com.github.skrox.travelally.util.Constants.VIEW_TYPE_NEARME_HEADING
 import com.github.skrox.travelally.util.Constants.VIEW_TYPE_NEARME_ITEMS
 import com.github.skrox.travelally.util.Constants.VIEW_TYPE_POPULAR_HEADING
 import com.github.skrox.travelally.util.Constants.VIEW_TYPE_POPULAR_ITEMS
+import com.github.skrox.travelally.util.snackbar
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -88,7 +89,7 @@ class HomeFragment : Fragment(), HomeListener {
 
 
     override fun onFailure(message: String) {
-//        root_layout.snackbar(message)
+        root_layout.snackbar(message)
     }
 
     private fun bindUI() {

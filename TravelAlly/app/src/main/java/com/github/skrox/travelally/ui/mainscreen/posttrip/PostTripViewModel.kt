@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat
 
 class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewModel() {
 
+    var postTripListener: PostTripListener? = null
     var description: String = ""
     private var extraPeople: MutableList<Int> = mutableListOf()
     var startLat: Double = 0.0
@@ -44,30 +45,41 @@ class PostTripViewModel(private val tripsRepository: TripsRepository) : ViewMode
     }
 
     fun postTrip() {
-        var startTime: String? = liveStartDate.value
-        var endTime: String? = liveEndDate.value
-        val fromServer = SimpleDateFormat("EEE, d MMM yyyy hh:mm aaa")
-        val myFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        var date = fromServer.parse(startTime)
-        startTime = myFormat.format(date)
-        date = fromServer.parse(endTime)
-        endTime = myFormat.format(date)
-        Log.e("datee", endTime)
+
         viewModelScope.launch {
-            tripsRepository.postTrip(
-                PostTrip(
-                    startTime,
-                    endTime,
-                    description,
-                    extraPeople,
-                    startLat,
-                    startLon,
-                    endLat,
-                    endLon,
-                    startName,
-                    destName
+            try {
+
+                postTripListener?.onStarted()
+                var startTime: String? = liveStartDate.value
+                var endTime: String? = liveEndDate.value
+                val fromServer = SimpleDateFormat("EEE, d MMM yyyy hh:mm aaa")
+                val myFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                var date = fromServer.parse(startTime)
+                startTime = myFormat.format(date)
+                date = fromServer.parse(endTime)
+                endTime = myFormat.format(date)
+                Log.e("datee", endTime)
+                tripsRepository.postTrip(
+                    PostTrip(
+                        startTime,
+                        endTime,
+                        description,
+                        extraPeople,
+                        startLat,
+                        startLon,
+                        endLat,
+                        endLon,
+                        startName,
+                        destName
+                    )
                 )
-            )
+                Log.e("post trip listener", ""+postTripListener)
+                postTripListener?.onSuccess()
+            } catch (e: Exception) {
+                postTripListener?.onFailure(e.message ?: "Unknown cause")
+                e.printStackTrace()
+            }
+
         }
     }
 
