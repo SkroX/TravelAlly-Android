@@ -68,4 +68,12 @@ class UserRepository @Inject constructor(
     suspend fun getUser(id: Int): User {
         return apiRequest { api.getUser(id, authMap) }
     }
+
+    fun getRadius() = prefs.getRadius()
+    fun getLocation() = prefs.getLocName()
+
+    fun setRadius(radius: String) {
+        prefs.saveRadius(radius)
+    }
+
 }

@@ -18,6 +18,15 @@ class UserProfileViewModel(
 ) : ViewModel() {
     var userProfileListener: UserProfileListener? = null
     val user: MutableLiveData<GoogleSignInAccount> = MutableLiveData()
+
+    val radius: MutableLiveData<String> = MutableLiveData()
+    val location: MutableLiveData<String> = MutableLiveData()
+
+    init {
+        radius.postValue(userRepository.getRadius().toString())
+        location.postValue(userRepository.getLocation())
+    }
+
     fun logout(view: View) {
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(view.context as MainActivity, OnCompleteListener<Void?> {
@@ -27,6 +36,14 @@ class UserProfileViewModel(
     }
 
     fun getUser(context: Context) = userRepository.getUser(context)
+
+    fun setRadius(radius: String) {
+        userRepository.setRadius(radius)
+    }
+
+    fun setLatLon() {
+
+    }
 
 
 }

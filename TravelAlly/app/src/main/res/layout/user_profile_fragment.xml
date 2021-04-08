@@ -248,6 +248,7 @@
                     android:textColor="#A6000000" />
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/radius"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_below="@id/loc_rad_text"
@@ -261,7 +262,7 @@
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center"
-                    android:text="756 Km"
+                    android:text="@{vm.radius + ` KM`}"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -281,7 +282,7 @@
                     android:focusable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center"
-                    android:text="Faridabad, Haryana"
+                    android:text="@{vm.location}"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold" />

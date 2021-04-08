@@ -34,9 +34,9 @@ class TripsRepository @Inject constructor(
         //TODO:check if fetch needed by db
 
         val queryMap = mapOf<String, Double>(
-            "lat" to (prefs.getLat() ?: 0.0),
-            "lon" to (prefs.getLon() ?: 0.0),
-            "radius" to (prefs.getRadius() ?: 5000.0)
+            "lat" to (prefs.getLat() ?: 28.7041),
+            "lon" to (prefs.getLon() ?: 77.1025),
+            "radius" to (prefs.getRadius() ?: 200.0)
         )
 
         val response = apiRequest { api.getTripsNearMe(authMap, queryMap) }

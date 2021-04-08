@@ -11,6 +11,7 @@ private const val KEY_LAT = "lat"
 private const val KEY_LON = "lon"
 private const val KEY_RADIUS = "radius"
 private const val KEY_USER_ID = "userId"
+private const val KEY_LOC_NAME = "locname"
 
 
 @Singleton
@@ -46,23 +47,37 @@ class PreferenceProvider @Inject constructor(
         return preference.getString(KEY_USER_ID, null)
     }
 
-    fun saveLatLonRadius(lat: Double, lon: Double, radius: Double) {
+    fun saveLat(lat: Double) {
         preference.edit().putString(
             KEY_LAT,
             lat.toString()
         ).apply()
+    }
+
+    fun saveLon(lon: Double) {
         preference.edit().putString(
             KEY_LON,
             lon.toString()
         ).apply()
+    }
+
+    fun saveRadius(radius: String) {
         preference.edit().putString(
             KEY_RADIUS,
             radius.toString()
         ).apply()
     }
 
-    fun getLat() = preference.getString(KEY_LAT, null)?.toDoubleOrNull()
-    fun getLon() = preference.getString(KEY_LON, null)?.toDoubleOrNull()
-    fun getRadius() = preference.getString(KEY_RADIUS, null)?.toDoubleOrNull()
+    fun saveLocName(name: String) {
+        preference.edit().putString(
+            KEY_LOC_NAME,
+            name
+        ).apply()
+    }
+
+    fun getLocName() = preference.getString(KEY_LOC_NAME, "Delhi, India")
+    fun getLat() = preference.getString(KEY_LAT, "28.7041")?.toDoubleOrNull()
+    fun getLon() = preference.getString(KEY_LON, "77.1025")?.toDoubleOrNull()
+    fun getRadius() = preference.getString(KEY_RADIUS, "200")?.toDoubleOrNull()
 
 }
