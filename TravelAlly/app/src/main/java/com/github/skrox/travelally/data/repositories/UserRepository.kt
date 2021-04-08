@@ -70,10 +70,21 @@ class UserRepository @Inject constructor(
     }
 
     fun getRadius() = prefs.getRadius()
-    fun getLocation() = prefs.getLocName()
-
     fun setRadius(radius: String) {
         prefs.saveRadius(radius)
+    }
+
+    fun getLocation() = prefs.getLocName()
+    fun setLocation(name: String) {
+        prefs.saveLocName(name)
+    }
+
+    fun setLat(lat: Double) {
+        prefs.saveLat(lat)
+    }
+
+    fun setLon(lon: Double) {
+        prefs.saveLon(lon)
     }
 
 }

@@ -41,8 +41,16 @@ class UserProfileViewModel(
         userRepository.setRadius(radius)
     }
 
-    fun setLatLon() {
+    fun setLat(lat: Double) {
+        userRepository.setLat(lat)
+    }
 
+    fun setLon(lon: Double) {
+        userRepository.setLon(lon)
+    }
+
+    fun setLocName(name: String) {
+        userRepository.setLocation(name)
     }
 
 

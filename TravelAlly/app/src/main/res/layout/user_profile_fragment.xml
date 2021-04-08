@@ -166,6 +166,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/radius_ll"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="16dp"
@@ -196,7 +197,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:text="5"
+                                    android:text="@{vm.radius}"
                                     android:textColor="@color/white" />
                             </LinearLayout>
                         </LinearLayout>
@@ -268,6 +269,7 @@
                     android:textStyle="bold" />
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_below="@id/loc_rad_text"
