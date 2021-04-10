@@ -19,27 +19,35 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 
-const val GOOGLE_SIGN_IN=1
-const val TAG="Debug"
-class AuthViewModel(private val mGoogleSignInClient: GoogleSignInClient,
-                    private val userRepo: UserRepository): ViewModel() {
+const val GOOGLE_SIGN_IN = 1
+const val TAG = "Debug"
+
+class AuthViewModel(
+    private val mGoogleSignInClient: GoogleSignInClient,
+    private val userRepo: UserRepository
+) : ViewModel() {
 
     val startActivityForResultEvent = LiveMessageEvent<ActivityNavigation>()
 
-    var authListener:AuthListener?=null
+    var authListener: AuthListener? = null
 
-    fun getuser(context: Context)=userRepo.getUser(context)
+    fun getuser(context: Context) = userRepo.getUser(context)
 
     fun googleLogin(view: View) {
         authListener?.onStarted()
         val signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResultEvent.sendEvent { startActivityForResult(signInIntent, GOOGLE_SIGN_IN) }
+        startActivityForResultEvent.sendEvent {
+            startActivityForResult(
+                signInIntent,
+                GOOGLE_SIGN_IN
+            )
+        }
     }
 
     //Called from Activity receving result
     fun onResultFromActivity(requestCode: Int, resultCode: Int, data: Intent?) {
         authListener?.onSuccess()
-        when(requestCode) {
+        when (requestCode) {
             GOOGLE_SIGN_IN -> {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 handleSignInResult(task)
@@ -54,32 +62,43 @@ class AuthViewModel(private val mGoogleSignInClient: GoogleSignInClient,
                 completedTask.getResult(ApiException::class.java)
 //            user.postValue(account)
 
-                CoroutineScope(IO).launch {
-                    try {
-                        val authResponse=userRepo.login(account?.idToken.toString())
-                        Log.e("token",authResponse.token)
-                        userRepo.saveuser(authResponse, account)
-                        Log.e("logged in",account?.idToken.toString())
-                    }  catch (e: ApiException) {
-                        // The ApiException status code indicates the detailed failure reason.
-                        // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            CoroutineScope(IO).launch {
+                try {
+                    val authResponse = userRepo.login(account?.idToken.toString())
+                    Log.e("token", authResponse.token)
+                    userRepo.saveuser(authResponse, account)
+                    Log.e("logged in", account?.idToken.toString())
+                } catch (e: ApiException) {
+                    // The ApiException status code indicates the detailed failure reason.
+                    // Please refer to the GoogleSignInStatusCodes class reference for more information.
+                    e.printStackTrace()
 
-                        authListener?.onFailure(e.message!!)
-                        e.printStackTrace()
+                    authListener?.onFailure(e.message!!)
 
 //            updateUI(null)
-                    }catch (e:NoInternetException){
-                        authListener?.onFailure(e.message!!)
-                    }catch (e:Exception){
-                        authListener?.onFailure(e.message!!)
-                    }
+                } catch (e: NoInternetException) {
+                    e.printStackTrace()
+
+                    authListener?.onFailure(e.message!!)
+                    e.printStackTrace()
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+
+                    authListener?.onFailure(e.message!!)
+                    e.printStackTrace()
 
                 }
 
+            }
+
             // Signed in successfully, show authenticated UI.
 //            updateUI(account)
-        }catch (e:Exception){
-            authListener?.onFailure(e.message?:e.toString())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            authListener?.onFailure(e.message ?: e.toString())
+            e.printStackTrace()
+
         }
     }
 

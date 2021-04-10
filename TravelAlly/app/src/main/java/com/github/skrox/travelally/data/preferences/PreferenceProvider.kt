@@ -36,7 +36,7 @@ class PreferenceProvider @Inject constructor(
     }
 
     fun getToken(): String? {
-        Log.e("prefpro", preference.getString(KEY_TOKEN, null))
+//        Log.e("prefpro", preference.getString(KEY_TOKEN, null))
         return preference.getString(KEY_TOKEN, null)
     }
 

@@ -22,7 +22,6 @@ class UserRepository @Inject constructor(
 //                    private val db:AppDatabase,
     private val prefs: PreferenceProvider
 ) : SafeApiRequest() {
-    private val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
     private val user = MutableLiveData<GoogleSignInAccount?>()
 
     suspend fun login(id_info: String?): AuthResponse {
@@ -62,11 +61,14 @@ class UserRepository @Inject constructor(
         //TODO:check if fetch needed by db
 
         val queryMap = mapOf<String, String>("q" to query)
+        val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
+
 
         return apiRequest { api.getUserSuggestions(authMap, queryMap) }
     }
 
     suspend fun getUser(id: Int): User {
+        val authMap = mapOf<String, String?>("Authorization" to "Token " + prefs.getToken())
         return apiRequest { api.getUser(id, authMap) }
     }
 

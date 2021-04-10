@@ -39,7 +39,7 @@ class UtilsModule {
     fun MyApiProvider(okkHttpclient: OkHttpClient): MyApi {
         return Retrofit.Builder()
             .client(okkHttpclient)
-            .baseUrl("http://192.168.1.10:8080/api/")
+            .baseUrl("http://3.16.156.100:8080/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MyApi::class.java)
