@@ -16,6 +16,34 @@ Learn it here: https://square.github.io/retrofit/
 Kotlin Coroutines are used for providing asynchronous programming.
 Read about them here: https://kotlinlang.org/docs/reference/coroutines-overview.html
 
+# Screenshots
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_165956_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_171036.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_170739_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_170541_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_165540_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_165549_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_165559_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_165857_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_165657_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_165709_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_165801_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_165821_com.github.skrox.travelally.jpg" height="650">
+
+<img src="https://github.com/SkroX/TravelAlly-Android/blob/master/Screenshots/Screenshot_20210412_165835_com.github.skrox.travelally.jpg" height="650">
+
 # Building the Code
 
 - Clone the repository using HTTP: `git clone https://github.com/SkroX/TravelAlly-Android.git`
