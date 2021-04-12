@@ -223,7 +223,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="0dp"
                     android:layout_marginEnd="32dp"
-                    android:text="Some text about me random shit random shit random shit random shit v random shit random shit"
+                    android:text="Some text about me. I love to travel. I'm a software engineer. And here are some more details about me....."
                     android:textColor="#A6000000" />
 
                 <com.google.android.material.textview.MaterialTextView
